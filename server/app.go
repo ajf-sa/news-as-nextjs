@@ -15,12 +15,12 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	setupRoute(app, hd)
+	setupRouter(app, hd)
 
 	app.Listen(":3000")
 }
 
-func setupRoute(app *fiber.App, hd *handlers.Handler) {
+func setupRouter(app *fiber.App, hd *handlers.Handler) {
 	app.Get("/", hd.HomePage)
 	app.Get("/:id", hd.Post)
 }

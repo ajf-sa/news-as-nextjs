@@ -13,5 +13,6 @@ func (h *Handler) HomePage(ctx *fiber.Ctx) error {
 }
 
 func (h *Handler) Post(ctx *fiber.Ctx) error {
+
 	return ctx.Send([]byte(ctx.Params("id")))
 }
