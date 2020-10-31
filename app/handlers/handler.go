@@ -9,7 +9,7 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) HomePage(ctx *fiber.Ctx) error {
-	return ctx.Send([]byte("HomePage"))
+	return ctx.Send([]byte(""))
 }
 
 func (h *Handler) Post(ctx *fiber.Ctx) error {
