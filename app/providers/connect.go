@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/alfuhigi/news-ajf-sa/config"
+	_ "github.com/lib/pq"
 )
 
 // Connect open conntion with postgresql

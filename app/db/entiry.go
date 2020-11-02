@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 )
 
@@ -16,4 +17,9 @@ func NewEntiry(db *sql.DB) *Entiry {
 		Queries: New(db),
 		DB:      db,
 	}
+}
+
+func (q *Queries) SetPost(arg AddNewPostParams) (Post, error) {
+
+	return q.AddNewPost(context.Background(), arg)
 }
