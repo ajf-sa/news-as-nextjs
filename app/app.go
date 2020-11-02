@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/handlers"
+	"github.com/alfuhigi/news-ajf-sa/providers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -10,7 +12,9 @@ import (
 
 func main() {
 	app := fiber.New()
-	hd := handlers.NewHandler()
+	dbConn := providers.Connect()
+	entiry := db.NewEntiry(dbConn)
+	hd := handlers.NewHandler(entiry)
 	app.Use(logger.New())
 	app.Use(recover.New())
 	app.Use(cors.New())
