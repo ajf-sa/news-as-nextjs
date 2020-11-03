@@ -8,20 +8,20 @@ import (
 	"github.com/alfuhigi/news-ajf-sa/providers"
 )
 
-func TestAddPost(t *testing.T) {
-	dbConn := providers.Connect()
-	entiry := db.NewEntiry(dbConn)
-	for id := 0; id < 100000; id++ {
-		_, err := entiry.SetPost(db.AddNewPostParams{})
-		if err != nil {
-			t.Error(err)
-		} else {
-			// fmt.Print(post)
-			t.Log(err)
-		}
-	}
+// func TestAddPost(t *testing.T) {
+// 	dbConn := providers.Connect()
+// 	entiry := db.NewEntiry(dbConn)
+// 	for id := 0; id < 100000; id++ {
+// 		_, err := entiry.SetPost(db.AddNewPostParams{})
+// 		if err != nil {
+// 			t.Error(err)
+// 		} else {
+// 			// fmt.Print(post)
+// 			t.Log(err)
+// 		}
+// 	}
 
-}
+// }
 
 func TestListPost(t *testing.T) {
 	dbConn := providers.Connect()
