@@ -17,7 +17,7 @@ func main() {
 		CaseSensitive:            true,
 		StrictRouting:            true,
 		DisableHeaderNormalizing: true,
-		ServerHeader:             "Apache",
+		ServerHeader:             "go",
 	}
 	for i := range os.Args[1:] {
 		if os.Args[1:][i] == "-prefork" {

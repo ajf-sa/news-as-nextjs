@@ -19,7 +19,7 @@ func NewHandler(entiry *db.Entiry) *Handler {
 
 // HomePage main page for news.ajf.sa
 func (h *Handler) HomePage(ctx *fiber.Ctx) error {
-	return ctx.Send([]byte(" "))
+	return ctx.Send([]byte("Hi"))
 }
 
 // GetOnePost method

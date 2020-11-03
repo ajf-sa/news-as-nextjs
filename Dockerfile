@@ -1,12 +1,9 @@
 FROM golang:1.14
 
-WORKDIR /fiber
+WORKDIR /app
 
-COPY ./src /fiber
+COPY app /app
 
-RUN go get github.com/valyala/quicktemplate/qtc
-
-RUN go generate ./templates
 RUN go build -ldflags="-s -w" -o app .
 
 CMD ./app -prefork
