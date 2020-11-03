@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/handlers"
 	"github.com/alfuhigi/news-ajf-sa/providers"
@@ -11,7 +13,18 @@ import (
 )
 
 func main() {
-	app := fiber.New()
+	config := fiber.Config{
+		CaseSensitive:            true,
+		StrictRouting:            true,
+		DisableHeaderNormalizing: true,
+		ServerHeader:             "Apache",
+	}
+	for i := range os.Args[1:] {
+		if os.Args[1:][i] == "-prefork" {
+			config.Prefork = true
+		}
+	}
+	app := fiber.New(config)
 	dbConn := providers.Connect()
 	entiry := db.NewEntiry(dbConn)
 	hd := handlers.NewHandler(entiry)
@@ -20,8 +33,11 @@ func main() {
 	app.Use(cors.New())
 
 	setupRouter(app, hd)
-
-	app.Listen(":3000")
+	// go main()
+	err := app.Listen(":3000")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func setupRouter(app *fiber.App, hd *handlers.Handler) {
