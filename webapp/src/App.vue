@@ -1,69 +1,96 @@
 <template>
-  <div class="App">
-    <header class="App-header">
-      <img src="/sa.svg" class="App-logo" alt="logo" />
-
-      <a class="App-link" href="https://ajf.sa" target="_blank" rel="noopener noreferrer">{{
-        state.message
-      }}</a>
-    </header>
+  <div class="m-auto p-2">
+    <h1 class="text-3xl my-2 text-center">Vue Calendar</h1>
+    <section class="mx-2 flex justify-between">
+      <h2 class="font-bold">{{ currentMonthName }}</h2>
+      <h2 class="font-bold">{{ currentYear }}</h2>
+    </section>
+    <section class="flex my-2">
+      <p
+        class="text-center"
+        style="width: 14.28%"
+        v-for="day in days"
+        :key="day"
+      >
+        {{ day }}
+      </p>
+    </section>
+    <section class="flex flex-wrap">
+      <p
+        class="text-center"
+        style="width: 14.28%"
+        v-for="num in startDay()"
+        :key="num"
+      ></p>
+      <p
+        class="text-center"
+        style="width: 14.28%"
+        v-for="num in daysInMonth()"
+        :key="num"
+        :class="currenDateClass(num)"
+      >
+        {{ num }}
+      </p>
+    </section>
+    <section class="flex justify-between my-4">
+      <button class="px-2 border rounded" @click="prev">Prev</button>
+      <button class="px-2 border rounded" @click="next">Next</button>
+    </section>
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent, reactive} from 'vue';
-interface State {
-  message: string;
-}
-export default defineComponent({
-  components: {},
-  setup() {
-    const state = reactive({
-      message: 'سارعي للمجد والعلياء',
-    });
+<script>
+export default {
+  data() {
     return {
-      state,
+      currentDate: new Date().getUTCDate(),
+      currentMonth: new Date().getMonth(),
+      currentYear: new Date().getFullYear(),
+      days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     };
   },
-});
+  methods: {
+    daysInMonth() {
+      return new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+    },
+    startDay() {
+      return new Date(this.currentYear, this.currentMonth, 1).getDay();
+    },
+    next() {
+      if (this.currentMonth === 11) {
+        this.currentMonth = 0;
+        this.currentYear++;
+      } else {
+        this.currentMonth++;
+      }
+    },
+    prev() {
+      if (this.currentMonth === 0) {
+        this.currentMonth = 11;
+        this.currentYear--;
+      } else {
+        this.currentMonth--;
+      }
+    },
+    currenDateClass(num) {
+      const calenderFullDate = new Date(
+        this.currentYear,
+        this.currentMonth,
+        num
+      ).toDateString();
+      const currentFullDate = new Date().toDateString();
+      return calenderFullDate === currentFullDate ? "text-yellow-600" : "";
+    },
+  },
+  computed: {
+    currentMonthName() {
+      return new Date(
+        this.currentYear,
+        this.currentMonth
+      ).toLocaleString("default", { month: "long" });
+    },
+  },
+};
 </script>
 
-<style>
-.App {
-  text-align: center;
-}
-.App-header {
-  background-color: #f9f6f6;
-  color: #32485f;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-}
-.App-link {
-  color: #00c185;
-}
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-  margin-bottom: 1rem;
-  animation: App-logo-spin infinite 1.6s ease-in-out alternate;
-}
-.App-tsx {
-  display: flex;
-}
-.App-tsx > div {
-  margin-left: 30px;
-  font-size: 16px;
-}
-@keyframes App-logo-spin {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.03);
-  }
-}
-</style>
+<style></style>

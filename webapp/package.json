@@ -7,6 +7,7 @@
     "access": "public"
   },
   "scripts": {
+    "style": "tailwindcss build src/assets/styles/index.css -o src/assets/style.css",
     "start": "snowpack dev",
     "build": "snowpack build",
     "type-check": "tsc",
@@ -15,7 +16,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vue": "^3.0.2"
+    "axios": "^0.21.0",
+    "tailwindcss": "^1.9.6",
+    "vue": "^3.0.2",
+    "vue-router": "^3.4.8"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
