@@ -7,6 +7,7 @@
     "access": "public"
   },
   "scripts": {
+    "snowpack": "snowpack",
     "style": "tailwindcss build src/assets/styles/index.css -o src/assets/style.css",
     "start": "snowpack dev",
     "build": "snowpack build",
