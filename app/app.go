@@ -33,7 +33,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	app.Static("/", "webapp")
+	// app.Static("/", "webapp")
 
 	setupRouter(app, hd)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
@@ -46,12 +46,9 @@ func main() {
 		post, err := entiry.GetOnePost(ctx.Context(), 1)
 		if err != nil {
 			log.Printf("GetOnePOST:", err)
-		} else {
-			log.Println(post.Title)
-			log.Println(post.Descr)
-			log.Println(post.Body)
 		}
-		return ctx.SendFile("./webapp/index.html")
+		return ctx.JSON(post)
+		// return ctx.SendFile("./webapp/index.html")
 	})
 
 	err := app.Listen(":3000")
@@ -61,6 +58,6 @@ func main() {
 }
 
 func setupRouter(app *fiber.App, hd *handlers.Handler) {
-	app.Get("/", hd.HomePage)
+	// app.Get("/", hd.HomePage)
 	// app.Get("/:id", hd.GetOnePost)
 }
