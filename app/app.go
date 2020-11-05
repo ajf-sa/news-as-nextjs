@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -42,6 +43,14 @@ func main() {
 		`)
 	})
 	app.Get("/*", func(ctx *fiber.Ctx) error {
+		post, err := entiry.GetOnePost(ctx.Context(), 1)
+		if err != nil {
+			log.Printf("GetOnePOST:", err)
+		} else {
+			log.Println(post.Title)
+			log.Println(post.Descr)
+			log.Println(post.Body)
+		}
 		return ctx.SendFile("./webapp/index.html")
 	})
 
