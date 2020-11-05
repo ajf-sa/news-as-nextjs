@@ -11,8 +11,12 @@ import (
 
 // Connect open conntion with postgresql
 func Connect() *sql.DB {
-	psqlinfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Config("DBHOST"), config.Config("DBPORT"), config.Config("DBUSER"), config.Config("DBPASS"), config.Config("DBNAME"))
+	psqlinfo := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+		config.Config("DBUSER"),
+		config.Config("DBPASS"),
+		config.Config("DBHOST"),
+		config.Config("DBPORT"),
+		config.Config("DBNAME"))
 	db, err := sql.Open("postgres", psqlinfo)
 	if err != nil {
 		log.Println("DB Open: ", err)
