@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -33,7 +32,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	// app.Static("/", "webapp")
+	app.Static("/", "webapp")
 
 	setupRouter(app, hd)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
@@ -43,12 +42,7 @@ func main() {
 		`)
 	})
 	app.Get("/*", func(ctx *fiber.Ctx) error {
-		post, err := entiry.GetOnePost(ctx.Context(), 1)
-		if err != nil {
-			log.Printf("GetOnePOST:", err)
-		}
-		return ctx.JSON(post)
-		// return ctx.SendFile("./webapp/index.html")
+		return ctx.SendFile("./webapp/index.html")
 	})
 
 	err := app.Listen(":3000")
