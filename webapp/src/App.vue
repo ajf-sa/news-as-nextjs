@@ -16,4 +16,8 @@ export default {
 
 <style>
 
+html{
+  direction: rtl;
+}
+
 </style>
