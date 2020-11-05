@@ -1,20 +1,13 @@
-FROM golang:1.14
+FROM node:12.19 AS JS_BUILD
+COPY webapp /webapp
+WORKDIR webapp
+RUN npm install 
+RUN npm run build 
 
-WORKDIR /app
-
-COPY app /app
-
-RUN go build -ldflags="-s -w" -o app .
-
-CMD ./app -prefork
-
-# FROM golang:1.15.3-alpine AS GO_BUILD
+FROM golang:1.15.3 AS GO_BUILD
 # RUN apk add build-base
-# COPY app /app
-# WORKDIR /app
-# RUN go build  -ldflags="-s -w" -o /go/bin/app
-
-# FROM alpine:3.12.0
-# COPY app/prod.env ./.env
-# COPY --from=GO_BUILD /go/bin/app ./
-# CMD ./app -prefork
+WORKDIR /app
+COPY app /app
+RUN go build -ldflags="-s -w" -o app .
+COPY --from=JS_BUILD /webapp/build* ./webapp/
+CMD ./app -prefork

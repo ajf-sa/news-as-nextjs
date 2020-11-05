@@ -3,7 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import "./assets/styles/index.css";
 
-createApp(App).use(router).mount("#app");
+const app = createApp(App)
+app.use(router)
+app.mount("#app")
+
 
 // Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
 // Learn more: https://www.snowpack.dev/#hot-module-replacement

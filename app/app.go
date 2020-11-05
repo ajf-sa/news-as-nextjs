@@ -32,8 +32,19 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
+	app.Static("/", "webapp")
+
 	setupRouter(app, hd)
-	// go main()
+	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
+		return ctx.SendString(`
+		User-agent: *
+		Allow: /
+		`)
+	})
+	app.Get("/*", func(ctx *fiber.Ctx) error {
+		return ctx.SendFile("./webapp/index.html")
+	})
+
 	err := app.Listen(":3000")
 	if err != nil {
 		panic(err)
@@ -42,5 +53,5 @@ func main() {
 
 func setupRouter(app *fiber.App, hd *handlers.Handler) {
 	app.Get("/", hd.HomePage)
-	app.Get("/:id", hd.GetOnePost)
+	// app.Get("/:id", hd.GetOnePost)
 }
