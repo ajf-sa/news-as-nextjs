@@ -52,6 +52,10 @@ func main() {
 }
 
 func setupRouter(app *fiber.App, hd *handlers.Handler) {
-	// app.Get("/", hd.HomePage)
+	app.Get("api/about", hd.AboutPage)
+	app.Get("api/tech", hd.TechPage)
+	app.Get("api/sport", hd.SportPage)
+	app.Get("api/local", hd.LocalPage)
+	app.Get("api/", hd.HomePage)
 	// app.Get("/:id", hd.GetOnePost)
 }
