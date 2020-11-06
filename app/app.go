@@ -32,8 +32,6 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	app.Static("/", "webapp")
-
 	setupRouter(app, hd)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
 		return ctx.SendString(`
@@ -41,6 +39,7 @@ func main() {
 		Allow: /
 		`)
 	})
+	app.Static("/", "webapp")
 	app.Get("/*", func(ctx *fiber.Ctx) error {
 		return ctx.SendFile("./webapp/index.html")
 	})
