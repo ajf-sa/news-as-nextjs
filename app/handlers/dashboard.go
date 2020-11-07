@@ -23,3 +23,8 @@ func (d *DashBoard) GetListPost(ctx *fiber.Ctx) error {
 	userId := ctx.Locals("userid")
 	return ctx.SendString(fmt.Sprintf("list post user %d", userId))
 }
+
+func (d *DashBoard) Setting(ctx *fiber.Ctx) error {
+	userId := ctx.Locals("userid")
+	return ctx.SendString(fmt.Sprintf("list setting user %d", userId))
+}

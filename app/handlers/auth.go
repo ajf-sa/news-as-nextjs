@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -32,21 +31,25 @@ func NewAuth(entiry *db.Entiry) *Auth {
 }
 
 func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
-
-	return ctx.Render("login", fiber.Map{}, "layout")
+	next := ctx.Query("next")
+	return ctx.Render("login", fiber.Map{"next": next}, "layout")
 }
 
 func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 	type Request struct {
 		User     string `form:"username"`
 		Password string `form:"password"`
+		Next     string `form:"next"`
 	}
 	var body Request
 	err := ctx.BodyParser(&body)
+
 	if err != nil {
 		log.Println(err)
 	}
-	fmt.Println(len(users))
+
+	next := body.Next
+
 	for _, user := range users {
 		if user.Username == body.User {
 			if user.Password == body.Password {
@@ -54,11 +57,11 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 				if err != nil {
 					log.Printf("Token Error ", err)
 				}
-				return ctx.Redirect("/cp/posts")
+				return ctx.Redirect(next)
 
 			}
 		}
 	}
-	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة"}, "layout")
+	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة", "next": next}, "layout")
 
 }

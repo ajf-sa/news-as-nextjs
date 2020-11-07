@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -73,9 +74,10 @@ func setupAuth(app *fiber.App, entiry *db.Entiry) {
 func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	cp := handlers.NewDashBoard(entiry)
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
+		next := string(ctx.Request().RequestURI())
 		userID, err := providers.ParseToken(ctx, "thisissecretkey")
 		if err != nil {
-			return ctx.Redirect("/auth/login")
+			return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
 
 		}
 		log.Println("this is protected")
@@ -84,6 +86,7 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	})
 
 	dsh.Get("/posts", cp.GetListPost)
+	dsh.Get("/setting", cp.Setting)
 }
 func setupRouter(app *fiber.App, entiry *db.Entiry) {
 	hd := handlers.NewHandler(entiry)
