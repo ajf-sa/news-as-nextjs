@@ -10,14 +10,18 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/template/html"
 )
 
 func main() {
+	engine := html.New("./views", ".html")
+
 	config := fiber.Config{
 		CaseSensitive:            true,
 		StrictRouting:            true,
 		DisableHeaderNormalizing: true,
 		ServerHeader:             "go",
+		Views:                    engine,
 	}
 	for i := range os.Args[1:] {
 		if os.Args[1:][i] == "-prefork" {
@@ -59,7 +63,8 @@ func main() {
 func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	cp := handlers.NewDashBoard(entiry)
 	dsh := app.Group("cp")
-	dsh.Get("/login", cp.Login)
+	dsh.Get("/login", cp.LoginForm)
+	dsh.Post("/login", cp.TryLogin)
 }
 func setupRouter(app *fiber.App, entiry *db.Entiry) {
 	hd := handlers.NewHandler(entiry)

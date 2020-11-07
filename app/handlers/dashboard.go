@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,6 +19,27 @@ func NewDashBoard(entiry *db.Entiry) *DashBoard {
 	}
 }
 
-func (d *DashBoard) Login(ctx *fiber.Ctx) error {
-	return ctx.SendString("DashBoard Login")
+func (d *DashBoard) LoginForm(ctx *fiber.Ctx) error {
+
+	return ctx.Render("login", fiber.Map{}, "layout")
+}
+
+func (d *DashBoard) TryLogin(ctx *fiber.Ctx) error {
+	type Request struct {
+		User     string `form:"username"`
+		Password string `form:"password"`
+	}
+	var body Request
+	err := ctx.BodyParser(&body)
+	if err != nil {
+		log.Println(err)
+	}
+	if body.User == "north" {
+		if body.Password == "ajall2ziz" {
+			return ctx.Render("welcome", fiber.Map{"user": body}, "layout")
+		}
+	}
+
+	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة"}, "layout")
+
 }
