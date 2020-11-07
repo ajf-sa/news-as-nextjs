@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -36,8 +37,9 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	setupRouter(app, entiry)
+	setupAuth(app, entiry)
 	setupDashboard(app, entiry)
+	setupRouter(app, entiry)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
 		return ctx.SendString(`
 		User-agent: *
@@ -60,11 +62,28 @@ func main() {
 		panic(err)
 	}
 }
+
+func setupAuth(app *fiber.App, entiry *db.Entiry) {
+	auth := handlers.NewAuth(entiry)
+	acn := app.Group("auth")
+	acn.Get("/login", auth.LoginForm)
+	acn.Post("/login", auth.TryLogin)
+}
+
 func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	cp := handlers.NewDashBoard(entiry)
-	dsh := app.Group("cp")
-	dsh.Get("/login", cp.LoginForm)
-	dsh.Post("/login", cp.TryLogin)
+	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
+		userID, err := providers.ParseToken(ctx, "thisissecretkey")
+		if err != nil {
+			return ctx.Redirect("/auth/login")
+
+		}
+		log.Println("this is protected")
+		ctx.Locals("userid", userID)
+		return ctx.Next()
+	})
+
+	dsh.Get("/posts", cp.GetListPost)
 }
 func setupRouter(app *fiber.App, entiry *db.Entiry) {
 	hd := handlers.NewHandler(entiry)
