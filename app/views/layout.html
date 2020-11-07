@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+   
+    <div class="relative bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+          <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+            <nav class="hidden md:flex"> 
+              
+              <a href="/cp/posts" class="text-base  px-4 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition ease-in-out duration-150">
+                الاخبار
+              </a>
+
+              <a href="/cp/users" class="text-base  px-4 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition ease-in-out duration-150">
+                المستخدمين
+              </a>
+             
+              <a href="/cp/setting" class="text-base  px-4 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition ease-in-out duration-150">
+              الاعدادات
+              </a>
+            </nav>
+            {{if .userId}}
+            <div class="hidden md:flex items-center justify-end space-x-8 md:flex-1 lg:w-0">
+              <a href="/auth/logout" class="whitespace-no-wrap text-base leading-6 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900">
+                خروج
+              </a>
+            </div>
+            {{else}}
+        
+            {{end}}
+          </div>
+        </div>
+      </div>
+
+    {{embed}}
+</body>
+</html>
