@@ -27,12 +27,13 @@ func main() {
 	app := fiber.New(config)
 	dbConn := providers.Connect()
 	entiry := db.NewEntiry(dbConn)
-	hd := handlers.NewHandler(entiry)
+
 	app.Use(logger.New())
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	setupRouter(app, hd)
+	setupRouter(app, entiry)
+	setupDashboard(app, entiry)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
 		return ctx.SendString(`
 		User-agent: *
@@ -41,7 +42,13 @@ func main() {
 	})
 	app.Static("/", "webapp")
 	app.Get("/*", func(ctx *fiber.Ctx) error {
-		return ctx.SendFile("./webapp/index.html")
+
+		ok := ctx.SendFile("./webapp/index.html")
+		if ok != nil {
+			return ctx.SendString("HI")
+		}
+		return ok
+
 	})
 
 	err := app.Listen(":3000")
@@ -49,12 +56,18 @@ func main() {
 		panic(err)
 	}
 }
-
-func setupRouter(app *fiber.App, hd *handlers.Handler) {
-	app.Get("api/about", hd.AboutPage)
-	app.Get("api/tech", hd.TechPage)
-	app.Get("api/sport", hd.SportPage)
-	app.Get("api/local", hd.LocalPage)
-	app.Get("api/", hd.HomePage)
+func setupDashboard(app *fiber.App, entiry *db.Entiry) {
+	cp := handlers.NewDashBoard(entiry)
+	dsh := app.Group("cp")
+	dsh.Get("/login", cp.Login)
+}
+func setupRouter(app *fiber.App, entiry *db.Entiry) {
+	hd := handlers.NewHandler(entiry)
+	grp := app.Group("api")
+	grp.Get("/about", hd.AboutPage)
+	grp.Get("/tech", hd.TechPage)
+	grp.Get("/sport", hd.SportPage)
+	grp.Get("/local", hd.LocalPage)
+	grp.Get("/", hd.HomePage)
 	// app.Get("/:id", hd.GetOnePost)
 }
