@@ -31,7 +31,19 @@ func NewAuth(entiry *db.Entiry) *Auth {
 }
 
 func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
+	userid, err := providers.ParseToken(ctx, "thisissecretkey")
+	if err != nil {
+		log.Println(err)
+	}
+	if userid != 0 {
+		return ctx.Redirect("/cp/posts")
+
+	}
+
 	next := ctx.Query("next")
+	if next == "" || next == "/auth/login" {
+		next = "/cp/posts"
+	}
 	return ctx.Render("login", fiber.Map{"next": next}, "layout")
 }
 
@@ -64,4 +76,11 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 	}
 	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة", "next": next}, "layout")
 
+}
+
+func (a *Auth) Logout(ctx *fiber.Ctx) error {
+
+	providers.DeleteToken(ctx)
+
+	return ctx.Redirect("/auth/login")
 }

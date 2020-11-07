@@ -69,7 +69,13 @@ func ParseToken(ctx *fiber.Ctx, secret string) (uint, error) {
 
 //DeleteToken deletes the jwt token
 func DeleteToken(c *fiber.Ctx) {
-	c.ClearCookie("fiber_jwt")
+	c.Cookie(&fiber.Cookie{
+		Name: "fiber_jwt",
+		// Set expiry date to the past
+		Expires:  time.Now().Add(-(time.Hour * 2)),
+		HTTPOnly: false,
+		SameSite: "lax",
+	})
 }
 
 //RefreshToken refreshes the token

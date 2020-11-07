@@ -69,6 +69,8 @@ func setupAuth(app *fiber.App, entiry *db.Entiry) {
 	acn := app.Group("auth")
 	acn.Get("/login", auth.LoginForm)
 	acn.Post("/login", auth.TryLogin)
+
+	acn.Get("/logout", auth.Logout)
 }
 
 func setupDashboard(app *fiber.App, entiry *db.Entiry) {

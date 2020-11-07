@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,10 +19,11 @@ func NewDashBoard(entiry *db.Entiry) *DashBoard {
 
 func (d *DashBoard) GetListPost(ctx *fiber.Ctx) error {
 	userId := ctx.Locals("userid")
-	return ctx.SendString(fmt.Sprintf("list post user %d", userId))
+	return ctx.Render("posts", fiber.Map{"userId": userId}, "layout")
+
 }
 
 func (d *DashBoard) Setting(ctx *fiber.Ctx) error {
 	userId := ctx.Locals("userid")
-	return ctx.SendString(fmt.Sprintf("list setting user %d", userId))
+	return ctx.Render("setting", fiber.Map{"userId": userId}, "layout")
 }
