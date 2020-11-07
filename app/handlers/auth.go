@@ -36,15 +36,15 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 		log.Println(err)
 	}
 	if userid != 0 {
-		return ctx.Redirect("/cp/posts")
+		return ctx.Redirect("/cp")
 
 	}
 
 	next := ctx.Query("next")
 	if next == "" || next == "/auth/login" {
-		next = "/cp/posts"
+		next = "/cp"
 	}
-	return ctx.Render("login", fiber.Map{"next": next}, "layout")
+	return ctx.Render("login", fiber.Map{"next": next})
 }
 
 func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
@@ -74,7 +74,7 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 			}
 		}
 	}
-	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة", "next": next}, "layout")
+	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة", "next": next})
 
 }
 

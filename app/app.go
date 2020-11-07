@@ -71,6 +71,7 @@ func setupAuth(app *fiber.App, entiry *db.Entiry) {
 	acn.Post("/login", auth.TryLogin)
 
 	acn.Get("/logout", auth.Logout)
+
 }
 
 func setupDashboard(app *fiber.App, entiry *db.Entiry) {
@@ -89,6 +90,8 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 
 	dsh.Get("/posts", cp.GetListPost)
 	dsh.Get("/setting", cp.Setting)
+	dsh.Get("/users", cp.Users)
+	dsh.Get("/", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.Entiry) {
 	hd := handlers.NewHandler(entiry)

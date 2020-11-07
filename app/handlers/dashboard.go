@@ -27,3 +27,13 @@ func (d *DashBoard) Setting(ctx *fiber.Ctx) error {
 	userId := ctx.Locals("userid")
 	return ctx.Render("setting", fiber.Map{"userId": userId}, "layout")
 }
+
+func (d *DashBoard) Users(ctx *fiber.Ctx) error {
+	userId := ctx.Locals("userid")
+	return ctx.Render("users", fiber.Map{"userId": userId}, "layout")
+}
+
+func (d *DashBoard) Dashboard(ctx *fiber.Ctx) error {
+	userId := ctx.Locals("userid")
+	return ctx.Render("dashboard", fiber.Map{"userId": userId}, "layout")
+}
