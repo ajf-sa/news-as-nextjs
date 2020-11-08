@@ -35,11 +35,8 @@ func CreateToken(ctx *fiber.Ctx, userID uint, secret string) (Token, error) {
 		return t, err
 	}
 	ctx.Cookie(&fiber.Cookie{
-		Name:     "userid",
-		Value:    tokenHash,
-		HTTPOnly: true,
-		Secure:   false,
-		SameSite: "lax",
+		Name:  "userid",
+		Value: tokenHash,
 	})
 	t.Hash = tokenHash
 	t.Expire = expiresIn
@@ -75,10 +72,7 @@ func DeleteToken(c *fiber.Ctx) {
 	c.Cookie(&fiber.Cookie{
 		Name: "userid",
 		// Set expiry date to the past
-		Expires:  time.Now().Add(-(time.Hour * 2)),
-		HTTPOnly: true,
-		Secure:   false,
-		SameSite: "lax",
+		Expires: time.Now().Add(-(time.Hour * 2)),
 	})
 }
 
