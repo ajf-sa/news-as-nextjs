@@ -2,6 +2,7 @@ package providers
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -45,7 +46,7 @@ func CreateToken(ctx *fiber.Ctx, userID uint, secret string) (Token, error) {
 
 func ParseToken(ctx *fiber.Ctx, secret string) (uint, error) {
 	tokenString := ctx.Cookies("fiber_jwt")
-
+	fmt.Println("Cookie:", tokenString)
 	if tokenString == "" {
 		return 0, errors.New("Empty auth cookie")
 
