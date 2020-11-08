@@ -11,5 +11,4 @@ COPY app /app
 COPY app/prod.env ./.env
 RUN go build -ldflags="-s -w" -o app .
 COPY --from=JS_BUILD /webapp/build* ./webapp/
-CMD ./app 
-#-prefork
+CMD ./app -prefork

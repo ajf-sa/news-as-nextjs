@@ -82,6 +82,7 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
 		store := sessions.Get(ctx)
+
 		userid := store.Get("user_id")
 		if userid != nil {
 			log.Println("this is protected", userid)
