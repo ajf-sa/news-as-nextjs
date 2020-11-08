@@ -45,12 +45,16 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	// }
 	store := a.session.Get(ctx)
 	defer store.Save()
-	userid := store.Get("user_id")
-	if userid != nil {
-		log.Println("Sessions: ", userid)
+	r := make(chan int32)
+	go func() {
+		defer close(r)
+		r <- store.Get("user_id").(int32)
+	}()
+	if r != nil {
+		log.Println("Sessions: ", r)
 		return ctx.Redirect("/cp")
 	}
-	log.Println("Sessions not found: ", userid)
+	log.Println("Sessions not found: ", r)
 	next := ctx.Query("next")
 	if next == "" || next == "/auth/login" {
 		next = "/cp"
@@ -78,7 +82,7 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 			if user.Password == body.Password {
 				store := a.session.Get(ctx)
 				defer store.Save()
-				store.Set("user_id", user.Id)
+				store.Set("user_id", int(user.Id))
 				log.Println(user.Id)
 				// _, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
 				// if err != nil {
