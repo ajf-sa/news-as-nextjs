@@ -11,7 +11,7 @@ import (
 
 type Auth struct {
 	*db.Entiry
-	*session.Session
+	session *session.Session
 }
 
 type User struct {
@@ -29,7 +29,7 @@ var users = []*User{
 func NewAuth(entiry *db.Entiry, session *session.Session) *Auth {
 	return &Auth{
 		Entiry:  entiry,
-		Session: session,
+		session: session,
 	}
 }
 
@@ -43,7 +43,7 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	// 	return ctx.Redirect("/cp")
 
 	// }
-	store := a.Get(ctx)
+	store := a.session.Get(ctx)
 	defer store.Save()
 	userid := store.Get("user_id")
 	if userid != nil {
@@ -72,13 +72,14 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 	}
 
 	next := body.Next
-	store := a.Get(ctx)
-	defer store.Save()
+
 	for _, user := range users {
 		if user.Username == body.User {
 			if user.Password == body.Password {
-
+				store := a.session.Get(ctx)
+				defer store.Save()
 				store.Set("user_id", user.Id)
+				log.Println(user.Id)
 				// _, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
 				// if err != nil {
 				// 	log.Printf("Token Error ", err)
@@ -93,7 +94,7 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 }
 
 func (a *Auth) Logout(ctx *fiber.Ctx) error {
-	store := *a.Get(ctx) // get/create new session
+	store := a.session.Get(ctx) // get/create new session
 	store.Destroy()
 	store.Delete("user_id")
 	defer store.Save()
