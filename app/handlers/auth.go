@@ -6,10 +6,12 @@ import (
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/providers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/session/v2"
 )
 
 type Auth struct {
 	*db.Entiry
+	*session.Session
 }
 
 type User struct {
@@ -24,21 +26,29 @@ var users = []*User{
 	{Id: 3, Username: "bader", Password: "ajall2ziz"},
 }
 
-func NewAuth(entiry *db.Entiry) *Auth {
+func NewAuth(entiry *db.Entiry, session *session.Session) *Auth {
 	return &Auth{
-		Entiry: entiry,
+		Entiry:  entiry,
+		Session: session,
 	}
 }
 
 func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
-	userid, err := providers.ParseToken(ctx, "thisissecretkey")
-	if err != nil {
-		log.Println(err)
-	}
+	// userid, err := providers.ParseToken(ctx, "thisissecretkey")
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
-	if userid > 0 {
+	// if userid > 0 {
+	// 	return ctx.Redirect("/cp")
+
+	// }
+	store := a.Get(ctx)
+	defer store.Save()
+	userid := store.Get("user_id")
+	if userid != nil {
+		log.Println("Sessions", userid)
 		return ctx.Redirect("/cp")
-
 	}
 
 	next := ctx.Query("next")
@@ -62,14 +72,17 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 	}
 
 	next := body.Next
-
+	store := a.Get(ctx)
+	defer store.Save()
 	for _, user := range users {
 		if user.Username == body.User {
 			if user.Password == body.Password {
-				_, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
-				if err != nil {
-					log.Printf("Token Error ", err)
-				}
+
+				store.Set("user_id", user.Id)
+				// _, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
+				// if err != nil {
+				// 	log.Printf("Token Error ", err)
+				// }
 				return ctx.Redirect(next)
 
 			}
@@ -80,8 +93,13 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 }
 
 func (a *Auth) Logout(ctx *fiber.Ctx) error {
-
+	store := *a.Get(ctx) // get/create new session
+	store.Destroy()
+	store.Delete("user_id")
+	defer store.Save()
 	providers.DeleteToken(ctx)
+	log.Println("Sessions logut", store.Get("user_id"))
+	log.Println("logout")
 
 	return ctx.Redirect("/auth/login")
 }

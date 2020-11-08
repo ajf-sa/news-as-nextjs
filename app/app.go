@@ -12,12 +12,15 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/session/v2"
 	"github.com/gofiber/template/html"
 )
 
+// Global session storage
+var sessions = session.New()
+
 func main() {
 	engine := html.New("./views", ".html")
-
 	config := fiber.Config{
 		CaseSensitive:            true,
 		StrictRouting:            true,
@@ -65,7 +68,7 @@ func main() {
 }
 
 func setupAuth(app *fiber.App, entiry *db.Entiry) {
-	auth := handlers.NewAuth(entiry)
+	auth := handlers.NewAuth(entiry, sessions)
 	acn := app.Group("auth")
 	acn.Get("/login", auth.LoginForm)
 	acn.Post("/login", auth.TryLogin)
@@ -78,18 +81,14 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	cp := handlers.NewDashBoard(entiry)
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
-		userID, err := providers.ParseToken(ctx, "thisissecretkey")
+		store := sessions.Get(ctx)
+		userid := store.Get("user_id")
+		if userid != nil {
 
-		if err != nil {
-			log.Println(err)
-		}
-		log.Println("userID:", userID)
-		if userID > 0 {
-			log.Println("this is protected")
-			ctx.Locals("userid", userID)
+			log.Println("this is protected", userid)
+			ctx.Locals("userid", userid)
 			return ctx.Next()
 		}
-
 		return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
 
 	})
