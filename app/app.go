@@ -79,13 +79,19 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
 		userID, err := providers.ParseToken(ctx, "thisissecretkey")
-		if err != nil {
-			return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
 
+		if err != nil {
+			log.Println(err)
 		}
-		log.Println("this is protected")
-		ctx.Locals("userid", userID)
-		return ctx.Next()
+		log.Println("userID:", userID)
+		if userID > 0 {
+			log.Println("this is protected")
+			ctx.Locals("userid", userID)
+			return ctx.Next()
+		}
+
+		return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
+
 	})
 
 	dsh.Get("/posts", cp.GetListPost)

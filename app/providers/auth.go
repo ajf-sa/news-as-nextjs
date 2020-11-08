@@ -35,7 +35,7 @@ func CreateToken(ctx *fiber.Ctx, userID uint, secret string) (Token, error) {
 		return t, err
 	}
 	ctx.Cookie(&fiber.Cookie{
-		Name:   "fiber_jwt",
+		Name:   "userid",
 		Value:  tokenHash,
 		Secure: false,
 	})
@@ -45,7 +45,7 @@ func CreateToken(ctx *fiber.Ctx, userID uint, secret string) (Token, error) {
 }
 
 func ParseToken(ctx *fiber.Ctx, secret string) (uint, error) {
-	tokenString := ctx.Cookies("fiber_jwt")
+	tokenString := ctx.Cookies("userid")
 	fmt.Println("Cookie:", tokenString)
 	if tokenString == "" {
 		return 0, errors.New("Empty auth cookie")
@@ -71,7 +71,7 @@ func ParseToken(ctx *fiber.Ctx, secret string) (uint, error) {
 //DeleteToken deletes the jwt token
 func DeleteToken(c *fiber.Ctx) {
 	c.Cookie(&fiber.Cookie{
-		Name: "fiber_jwt",
+		Name: "userid",
 		// Set expiry date to the past
 		Expires:  time.Now().Add(-(time.Hour * 2)),
 		HTTPOnly: false,
