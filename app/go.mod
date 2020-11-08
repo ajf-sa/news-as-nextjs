@@ -6,7 +6,6 @@ require (
 	github.com/andybalholm/brotli v1.0.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofiber/fiber/v2 v2.1.4
-	github.com/gofiber/session v1.2.5
 	github.com/gofiber/session/v2 v2.0.2
 	github.com/gofiber/template v1.6.4
 	github.com/joho/godotenv v1.3.0
