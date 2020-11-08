@@ -11,7 +11,7 @@ import (
 
 type Auth struct {
 	*db.Entiry
-	session *session.Session
+	*session.Session
 }
 
 type User struct {
@@ -29,7 +29,7 @@ var users = []*User{
 func NewAuth(entiry *db.Entiry, session *session.Session) *Auth {
 	return &Auth{
 		Entiry:  entiry,
-		session: session,
+		Session: session,
 	}
 }
 
@@ -43,18 +43,14 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	// 	return ctx.Redirect("/cp")
 
 	// }
-	store := a.session.Get(ctx)
+	store := a.Get(ctx)
 	defer store.Save()
-	r := make(chan int32)
-	go func() {
-		defer close(r)
-		r <- store.Get("user_id").(int32)
-	}()
-	if r != nil {
-		log.Println("Sessions: ", r)
+	userid := store.Get("user_id")
+	if userid != nil {
+		log.Println("Sessions: ", userid)
 		return ctx.Redirect("/cp")
 	}
-	log.Println("Sessions not found: ", r)
+	log.Println("Sessions not found: ", userid)
 	next := ctx.Query("next")
 	if next == "" || next == "/auth/login" {
 		next = "/cp"
@@ -80,10 +76,9 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 	for _, user := range users {
 		if user.Username == body.User {
 			if user.Password == body.Password {
-				store := a.session.Get(ctx)
+				store := a.Get(ctx)
 				defer store.Save()
-				store.Set("user_id", int(user.Id))
-				log.Println(user.Id)
+				store.Set("user_id", user.Id)
 				// _, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
 				// if err != nil {
 				// 	log.Printf("Token Error ", err)
@@ -98,7 +93,7 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 }
 
 func (a *Auth) Logout(ctx *fiber.Ctx) error {
-	store := a.session.Get(ctx) // get/create new session
+	store := *a.Get(ctx) // get/create new session
 	store.Destroy()
 	store.Delete("user_id")
 	defer store.Save()

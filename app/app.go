@@ -82,18 +82,13 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
 		store := sessions.Get(ctx)
-		defer store.Save()
-		r := make(chan int32)
-		go func() {
-			defer close(r)
-			r <- store.Get("user_id").(int32)
-		}()
-		if r != nil {
-			log.Println("this is protected", r)
-			ctx.Locals("userid", r)
+		userid := store.Get("user_id")
+		if userid != nil {
+			log.Println("this is protected", userid)
+			ctx.Locals("userid", userid)
 			return ctx.Next()
 		}
-		log.Println("this is will redirect: ", r)
+		log.Println("this is will redirect: ", userid)
 		return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
 
 	})
