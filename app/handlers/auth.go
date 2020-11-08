@@ -47,10 +47,10 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	defer store.Save()
 	userid := store.Get("user_id")
 	if userid != nil {
-		log.Println("Sessions", userid)
+		log.Println("Sessions: ", userid)
 		return ctx.Redirect("/cp")
 	}
-
+	log.Println("Sessions not found: ", userid)
 	next := ctx.Query("next")
 	if next == "" || next == "/auth/login" {
 		next = "/cp"
