@@ -84,11 +84,11 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 		store := sessions.Get(ctx)
 		userid := store.Get("user_id")
 		if userid != nil {
-
 			log.Println("this is protected", userid)
 			ctx.Locals("userid", userid)
 			return ctx.Next()
 		}
+		log.Println("this is will redirect: ", userid)
 		return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
 
 	})
