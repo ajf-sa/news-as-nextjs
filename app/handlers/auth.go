@@ -35,7 +35,8 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	if err != nil {
 		log.Println(err)
 	}
-	if userid != 0 {
+
+	if userid > 0 {
 		return ctx.Redirect("/cp")
 
 	}
