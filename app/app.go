@@ -19,15 +19,15 @@ func main() {
 		// cookie.Value = "test-test-test"
 		// cookie.Expires = time.Now().Add(24 * time.Hour)
 		// ctx.Cookie(cookie)
-		user_id := store.Get("user_id")
-		return ctx.SendString(user_id.(string))
+		user_id := store.Get("user_id").(int)
+		return ctx.SendString(string(user_id))
 	})
 	app.Get("/private", func(ctx *fiber.Ctx) error {
 		store := sessions.Get(ctx)
 		defer store.Save()
 		// cookie := ctx.Cookies("test-fiber")
-		user_id := store.Get("user_id")
-		return ctx.SendString(user_id.(string))
+		user_id := store.Get("user_id").(int)
+		return ctx.SendString(string(user_id))
 
 	})
 	app.Get("/", func(ctx *fiber.Ctx) error {
