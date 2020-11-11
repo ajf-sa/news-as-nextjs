@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/session/v2"
 )
 
@@ -10,6 +12,8 @@ var sessions = session.New()
 
 func main() {
 	app := fiber.New()
+	app.Use(logger.New())
+	app.Use(recover.New())
 	app.Get("/login", func(ctx *fiber.Ctx) error {
 		store := sessions.Get(ctx)
 		defer store.Save()
