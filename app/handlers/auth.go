@@ -44,7 +44,7 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 
 	// }
 	store := a.Get(ctx)
-	defer store.Save()
+	// defer store.Save()
 	userid := store.Get("user_id")
 	if userid != nil {
 		log.Println("Sessions: ", userid)
