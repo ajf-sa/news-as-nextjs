@@ -17,10 +17,11 @@ import (
 )
 
 // Global session storage
-var sessions = session.New()
+var sessions *session.Session
 
 func main() {
 	engine := html.New("./views", ".html")
+	sessions = session.New()
 	config := fiber.Config{
 		CaseSensitive:            true,
 		StrictRouting:            true,
@@ -70,8 +71,8 @@ func main() {
 func setupAuth(app *fiber.App, entiry *db.Entiry) {
 	auth := handlers.NewAuth(entiry, sessions)
 	acn := app.Group("auth")
-	acn.Get("/login", auth.LoginForm)
 	acn.Post("/login", auth.TryLogin)
+	acn.Get("/login", auth.LoginForm)
 
 	acn.Get("/logout", auth.Logout)
 

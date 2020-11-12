@@ -34,7 +34,7 @@ func NewAuth(entiry *db.Entiry, session *session.Session) *Auth {
 	}
 }
 
-func (a Auth) LoginForm(ctx *fiber.Ctx) error {
+func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	// userid, err := providers.ParseToken(ctx, "thisissecretkey")
 	// if err != nil {
 	// 	log.Println(err)
