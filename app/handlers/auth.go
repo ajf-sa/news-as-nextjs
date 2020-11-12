@@ -34,7 +34,7 @@ func NewAuth(entiry *db.Entiry, session *session.Session) *Auth {
 	}
 }
 
-func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
+func (a Auth) LoginForm(ctx *fiber.Ctx) error {
 	// userid, err := providers.ParseToken(ctx, "thisissecretkey")
 	// if err != nil {
 	// 	log.Println(err)
@@ -48,7 +48,7 @@ func (a *Auth) LoginForm(ctx *fiber.Ctx) error {
 	// defer store.Save()
 	userid := store.Get("user_id")
 	if userid != nil {
-		log.Println("Sessions: ", userid)
+		log.Println("check Sessions: ", userid)
 		return ctx.Redirect("/cp")
 	}
 	log.Println("Sessions not found: ", userid)
