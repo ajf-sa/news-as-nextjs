@@ -83,8 +83,8 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 				store.Set("user_id", user.Id)
 				user_id := store.Get("user_id")
 				if user_id != nil {
-					user := strconv.Itoa(user_id.(int))
-					log.Println(user)
+					userd := strconv.Itoa(user_id.(int))
+					log.Println(user.Username, userd)
 					return ctx.Redirect(next)
 				}
 				// _, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
