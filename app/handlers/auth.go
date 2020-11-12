@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/providers"
@@ -78,11 +79,19 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 			if user.Password == body.Password {
 				store := a.Get(ctx)
 				defer store.Save()
+
 				store.Set("user_id", user.Id)
+				user_id := store.Get("user_id")
+				if user_id != nil {
+					user := strconv.Itoa(user_id.(int))
+					log.Println(user)
+					return ctx.Redirect(next)
+				}
 				// _, err := providers.CreateToken(ctx, user.Id, "thisissecretkey")
 				// if err != nil {
 				// 	log.Printf("Token Error ", err)
 				// }
+
 				return ctx.Redirect(next)
 
 			}
