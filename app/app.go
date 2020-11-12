@@ -23,8 +23,8 @@ func main() {
 	engine := html.New("./views", ".html")
 	sessions = session.New()
 	config := fiber.Config{
-		CaseSensitive:            true,
-		StrictRouting:            true,
+		CaseSensitive:            false,
+		StrictRouting:            false,
 		DisableHeaderNormalizing: true,
 		ServerHeader:             "go",
 		Views:                    engine,
