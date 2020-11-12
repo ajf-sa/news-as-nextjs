@@ -16,7 +16,7 @@ type Auth struct {
 }
 
 type User struct {
-	Id       uint
+	Id       int
 	Username string
 	Password string
 }
