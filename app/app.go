@@ -23,11 +23,8 @@ func main() {
 	engine := html.New("./views", ".html")
 	sessions = session.New()
 	config := fiber.Config{
-		CaseSensitive:            true,
-		StrictRouting:            true,
-		DisableHeaderNormalizing: true,
-		ServerHeader:             "go",
-		Views:                    engine,
+		ServerHeader: "go",
+		Views:        engine,
 	}
 	for i := range os.Args[1:] {
 		if os.Args[1:][i] == "-prefork" {
