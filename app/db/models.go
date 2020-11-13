@@ -17,3 +17,11 @@ type Post struct {
 	UserID    int32
 	CateID    int32
 }
+
+type User struct {
+	ID       int32
+	Username string
+	Password string
+	Email    string
+	CreateAt time.Time
+}

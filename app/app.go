@@ -71,8 +71,11 @@ func main() {
 func setupAuth(app *fiber.App, entiry *db.Entiry) {
 	auth := handlers.NewAuth(entiry, sessions)
 	acn := app.Group("auth")
-	acn.Post("/login", auth.TryLogin)
+	acn.Post("/login", auth.TryLogin2)
 	acn.Get("/login", auth.LoginForm)
+
+	acn.Post("/register", auth.SetUp)
+	acn.Get("/register", auth.SetUpForm)
 
 	acn.Get("/logout", auth.Logout)
 
