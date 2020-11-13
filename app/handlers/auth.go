@@ -101,6 +101,80 @@ func (a *Auth) TryLogin(ctx *fiber.Ctx) error {
 
 }
 
+func (a *Auth) TryLogin2(ctx *fiber.Ctx) error {
+
+	type Request struct {
+		User     string `form:"username"`
+		Password string `form:"password"`
+		Next     string `form:"next"`
+	}
+	var body Request
+	err := ctx.BodyParser(&body)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	next := body.Next
+	isUser, err := a.GetOneUSer(ctx.Context(), body.User)
+	if err != nil {
+		log.Println(err)
+	}
+	if isUser.ID > 0 {
+		isMatch := providers.CheckPasswordHash(body.Password, isUser.Password)
+		if isMatch {
+			user_id := a.Login(ctx, isUser.ID)
+			log.Println(isUser.Username, user_id)
+			return ctx.Redirect(next)
+		}
+	}
+	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة", "next": next})
+
+}
+func (a *Auth) SetUpForm(ctx *fiber.Ctx) error {
+	store := a.Get(ctx)
+	// defer store.Save()
+	userid := store.Get("user_id")
+	if userid != nil {
+		log.Println("check Sessions: ", userid)
+		return ctx.Redirect("/cp")
+	}
+	log.Println("Sessions not found: ", userid)
+	return ctx.Render("register", fiber.Map{})
+
+}
+func (a *Auth) SetUp(ctx *fiber.Ctx) error {
+	type Request struct {
+		User     string `form:"username"`
+		Password string `form:"password"`
+		Email    string `form:"email"`
+	}
+	var body Request
+	err := ctx.BodyParser(&body)
+
+	if err != nil {
+		log.Println(err)
+	}
+	isUser, err := a.GetOneUSer(ctx.Context(), body.User)
+	if err != nil {
+		log.Println(err)
+	}
+	if isUser.ID > 0 {
+		return ctx.Render("register", fiber.Map{"error": "اسم المستخدم موجود مسبقا"})
+	}
+	password, _ := providers.HashPassword(body.Password)
+	newUser, err := a.AddNewUser(ctx.Context(), db.AddNewUserParams{Username: body.User, Password: password})
+	if err != nil {
+		log.Println(err)
+	}
+	if newUser.ID > 0 {
+		return ctx.Redirect("/auth/login")
+	}
+
+	return ctx.Render("register", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة"})
+
+}
+
 func (a *Auth) Logout(ctx *fiber.Ctx) error {
 	store := *a.Get(ctx) // get/create new session
 	store.Destroy()
@@ -111,4 +185,11 @@ func (a *Auth) Logout(ctx *fiber.Ctx) error {
 	log.Println("logout")
 
 	return ctx.Redirect("/auth/login")
+}
+
+func (a *Auth) Login(c *fiber.Ctx, id int32) error {
+	store := a.Get(c)
+	defer store.Save()
+	store.Set("user_id", id)
+	return nil
 }
