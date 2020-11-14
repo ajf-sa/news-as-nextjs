@@ -32,7 +32,7 @@ func (d *DashBoard) Setting(ctx *fiber.Ctx) error {
 }
 
 func (d *DashBoard) Users(ctx *fiber.Ctx) error {
-	// userId := ctx.Locals("userid")
+	userId := ctx.Locals("userid")
 	var limit int32
 	limit = 2
 	pagnation := ctx.Query("page", "1")
@@ -72,7 +72,7 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 		prev = false
 	}
 
-	return ctx.Render("users", fiber.Map{"users": users, "page": pg, "prev": prev, "prevNum": prevNum, "next": next, "nextNum": nextNum}, "layout")
+	return ctx.Render("users", fiber.Map{"userId": userId, "users": users, "page": pg, "prev": prev, "prevNum": prevNum, "next": next, "nextNum": nextNum}, "layout")
 }
 
 func (d *DashBoard) Dashboard(ctx *fiber.Ctx) error {
