@@ -37,6 +37,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.listPostsStmt, err = db.PrepareContext(ctx, listPosts); err != nil {
 		return nil, fmt.Errorf("error preparing query ListPosts: %w", err)
 	}
+	if q.listUsersStmt, err = db.PrepareContext(ctx, listUsers); err != nil {
+		return nil, fmt.Errorf("error preparing query ListUsers: %w", err)
+	}
 	return &q, nil
 }
 
@@ -65,6 +68,11 @@ func (q *Queries) Close() error {
 	if q.listPostsStmt != nil {
 		if cerr := q.listPostsStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing listPostsStmt: %w", cerr)
+		}
+	}
+	if q.listUsersStmt != nil {
+		if cerr := q.listUsersStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing listUsersStmt: %w", cerr)
 		}
 	}
 	return err
@@ -111,6 +119,7 @@ type Queries struct {
 	getOnePostStmt *sql.Stmt
 	getOneUSerStmt *sql.Stmt
 	listPostsStmt  *sql.Stmt
+	listUsersStmt  *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
@@ -122,5 +131,6 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		getOnePostStmt: q.getOnePostStmt,
 		getOneUSerStmt: q.getOneUSerStmt,
 		listPostsStmt:  q.listPostsStmt,
+		listUsersStmt:  q.listUsersStmt,
 	}
 }
