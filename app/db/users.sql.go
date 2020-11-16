@@ -8,16 +8,17 @@ import (
 )
 
 const addNewUser = `-- name: AddNewUser :one
-INSERT INTO users(username,password)VALUES($1,$2) RETURNING id, username, password, email, create_at, is_active, is_staff, is_admin
+INSERT INTO users(username,password,email)VALUES($1,$2,$3) RETURNING id, username, password, email, create_at, is_active, is_staff, is_admin
 `
 
 type AddNewUserParams struct {
 	Username string
 	Password string
+	Email    string
 }
 
 func (q *Queries) AddNewUser(ctx context.Context, arg AddNewUserParams) (User, error) {
-	row := q.queryRow(ctx, q.addNewUserStmt, addNewUser, arg.Username, arg.Password)
+	row := q.queryRow(ctx, q.addNewUserStmt, addNewUser, arg.Username, arg.Password, arg.Email)
 	var i User
 	err := row.Scan(
 		&i.ID,

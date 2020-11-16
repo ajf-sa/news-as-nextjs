@@ -1,5 +1,5 @@
 -- name: AddNewPost :one
-INSERT INTO posts(title,body)VALUES($1,$2) RETURNING *;
+INSERT INTO posts(title,body,thumbnail,image)VALUES($1,$2,$3,$4) RETURNING *;
 
 -- name: ListPosts :many
 SELECT * FROM posts;
