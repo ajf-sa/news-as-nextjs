@@ -6,6 +6,29 @@ import (
 	"time"
 )
 
+type Config struct {
+	SeoTitle    string
+	SeoDescript string
+}
+
+type Image struct {
+	ID     int32
+	Name   string
+	Dist   string
+	Size   float64
+	Width  float64
+	Height float64
+}
+
+type Page struct {
+	ID       int32
+	Title    string
+	Descr    string
+	ParentID int32
+	CreateAt time.Time
+	IsActive bool
+}
+
 type Post struct {
 	ID        int32
 	Title     string
@@ -15,7 +38,7 @@ type Post struct {
 	Image     string
 	CreateAt  time.Time
 	UserID    int32
-	CateID    int32
+	PageID    int32
 }
 
 type User struct {
@@ -24,4 +47,7 @@ type User struct {
 	Password string
 	Email    string
 	CreateAt time.Time
+	IsActive bool
+	IsStaff  bool
+	IsAdmin  bool
 }
