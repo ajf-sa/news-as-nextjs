@@ -8,7 +8,7 @@ import (
 )
 
 const addNewPost = `-- name: AddNewPost :one
-INSERT INTO posts(title,body)VALUES($1,$2) RETURNING id, title, descr, body, thumbnail, image, create_at, user_id, cate_id
+INSERT INTO posts(title,body)VALUES($1,$2) RETURNING id, title, descr, body, thumbnail, image, create_at, user_id, page_id
 `
 
 type AddNewPostParams struct {
@@ -28,13 +28,13 @@ func (q *Queries) AddNewPost(ctx context.Context, arg AddNewPostParams) (Post, e
 		&i.Image,
 		&i.CreateAt,
 		&i.UserID,
-		&i.CateID,
+		&i.PageID,
 	)
 	return i, err
 }
 
 const getOnePost = `-- name: GetOnePost :one
-SELECT id, title, descr, body, thumbnail, image, create_at, user_id, cate_id FROM posts WHERE id=$1 LIMIT 1 OFFSET 0
+SELECT id, title, descr, body, thumbnail, image, create_at, user_id, page_id FROM posts WHERE id=$1 LIMIT 1 OFFSET 0
 `
 
 func (q *Queries) GetOnePost(ctx context.Context, id int32) (Post, error) {
@@ -49,13 +49,13 @@ func (q *Queries) GetOnePost(ctx context.Context, id int32) (Post, error) {
 		&i.Image,
 		&i.CreateAt,
 		&i.UserID,
-		&i.CateID,
+		&i.PageID,
 	)
 	return i, err
 }
 
 const listPosts = `-- name: ListPosts :many
-SELECT id, title, descr, body, thumbnail, image, create_at, user_id, cate_id FROM posts
+SELECT id, title, descr, body, thumbnail, image, create_at, user_id, page_id FROM posts
 `
 
 func (q *Queries) ListPosts(ctx context.Context) ([]Post, error) {
@@ -76,7 +76,7 @@ func (q *Queries) ListPosts(ctx context.Context) ([]Post, error) {
 			&i.Image,
 			&i.CreateAt,
 			&i.UserID,
-			&i.CateID,
+			&i.PageID,
 		); err != nil {
 			return nil, err
 		}

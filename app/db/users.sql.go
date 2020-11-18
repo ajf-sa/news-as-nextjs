@@ -8,16 +8,17 @@ import (
 )
 
 const addNewUser = `-- name: AddNewUser :one
-INSERT INTO users(username,password)VALUES($1,$2) RETURNING id, username, password, email, create_at
+INSERT INTO users(username,password,email)VALUES($1,$2,$3) RETURNING id, username, password, email, create_at, is_active, is_staff, is_admin
 `
 
 type AddNewUserParams struct {
 	Username string
 	Password string
+	Email    string
 }
 
 func (q *Queries) AddNewUser(ctx context.Context, arg AddNewUserParams) (User, error) {
-	row := q.queryRow(ctx, q.addNewUserStmt, addNewUser, arg.Username, arg.Password)
+	row := q.queryRow(ctx, q.addNewUserStmt, addNewUser, arg.Username, arg.Password, arg.Email)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -25,12 +26,33 @@ func (q *Queries) AddNewUser(ctx context.Context, arg AddNewUserParams) (User, e
 		&i.Password,
 		&i.Email,
 		&i.CreateAt,
+		&i.IsActive,
+		&i.IsStaff,
+		&i.IsAdmin,
 	)
 	return i, err
 }
 
+const disableUser = `-- name: DisableUser :exec
+UPDATE users SET is_active=false
+`
+
+func (q *Queries) DisableUser(ctx context.Context) error {
+	_, err := q.exec(ctx, q.disableUserStmt, disableUser)
+	return err
+}
+
+const enableUser = `-- name: EnableUser :exec
+UPDATE users SET is_active=true
+`
+
+func (q *Queries) EnableUser(ctx context.Context) error {
+	_, err := q.exec(ctx, q.enableUserStmt, enableUser)
+	return err
+}
+
 const getOneUSer = `-- name: GetOneUSer :one
-SELECT id, username, password, email, create_at FROM users WHERE username=$1 LIMIT 1 OFFSET 0
+SELECT id, username, password, email, create_at, is_active, is_staff, is_admin FROM users WHERE username=$1 and is_active=true LIMIT 1 OFFSET 0
 `
 
 func (q *Queries) GetOneUSer(ctx context.Context, username string) (User, error) {
@@ -42,12 +64,15 @@ func (q *Queries) GetOneUSer(ctx context.Context, username string) (User, error)
 		&i.Password,
 		&i.Email,
 		&i.CreateAt,
+		&i.IsActive,
+		&i.IsStaff,
+		&i.IsAdmin,
 	)
 	return i, err
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, username, password, email, create_at FROM users LIMIT $1 OFFSET $2
+SELECT id, username, password, email, create_at, is_active, is_staff, is_admin FROM users LIMIT $1 OFFSET $2
 `
 
 type ListUsersParams struct {
@@ -70,6 +95,9 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 			&i.Password,
 			&i.Email,
 			&i.CreateAt,
+			&i.IsActive,
+			&i.IsStaff,
+			&i.IsAdmin,
 		); err != nil {
 			return nil, err
 		}

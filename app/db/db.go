@@ -22,11 +22,26 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
+	if q.addNewPageStmt, err = db.PrepareContext(ctx, addNewPage); err != nil {
+		return nil, fmt.Errorf("error preparing query AddNewPage: %w", err)
+	}
 	if q.addNewPostStmt, err = db.PrepareContext(ctx, addNewPost); err != nil {
 		return nil, fmt.Errorf("error preparing query AddNewPost: %w", err)
 	}
 	if q.addNewUserStmt, err = db.PrepareContext(ctx, addNewUser); err != nil {
 		return nil, fmt.Errorf("error preparing query AddNewUser: %w", err)
+	}
+	if q.disablePageStmt, err = db.PrepareContext(ctx, disablePage); err != nil {
+		return nil, fmt.Errorf("error preparing query DisablePage: %w", err)
+	}
+	if q.disableUserStmt, err = db.PrepareContext(ctx, disableUser); err != nil {
+		return nil, fmt.Errorf("error preparing query DisableUser: %w", err)
+	}
+	if q.enablePageStmt, err = db.PrepareContext(ctx, enablePage); err != nil {
+		return nil, fmt.Errorf("error preparing query EnablePage: %w", err)
+	}
+	if q.enableUserStmt, err = db.PrepareContext(ctx, enableUser); err != nil {
+		return nil, fmt.Errorf("error preparing query EnableUser: %w", err)
 	}
 	if q.getOnePostStmt, err = db.PrepareContext(ctx, getOnePost); err != nil {
 		return nil, fmt.Errorf("error preparing query GetOnePost: %w", err)
@@ -34,17 +49,28 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.getOneUSerStmt, err = db.PrepareContext(ctx, getOneUSer); err != nil {
 		return nil, fmt.Errorf("error preparing query GetOneUSer: %w", err)
 	}
+	if q.listPagesStmt, err = db.PrepareContext(ctx, listPages); err != nil {
+		return nil, fmt.Errorf("error preparing query ListPages: %w", err)
+	}
 	if q.listPostsStmt, err = db.PrepareContext(ctx, listPosts); err != nil {
 		return nil, fmt.Errorf("error preparing query ListPosts: %w", err)
 	}
 	if q.listUsersStmt, err = db.PrepareContext(ctx, listUsers); err != nil {
 		return nil, fmt.Errorf("error preparing query ListUsers: %w", err)
 	}
+	if q.setConfigStmt, err = db.PrepareContext(ctx, setConfig); err != nil {
+		return nil, fmt.Errorf("error preparing query SetConfig: %w", err)
+	}
 	return &q, nil
 }
 
 func (q *Queries) Close() error {
 	var err error
+	if q.addNewPageStmt != nil {
+		if cerr := q.addNewPageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing addNewPageStmt: %w", cerr)
+		}
+	}
 	if q.addNewPostStmt != nil {
 		if cerr := q.addNewPostStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing addNewPostStmt: %w", cerr)
@@ -53,6 +79,26 @@ func (q *Queries) Close() error {
 	if q.addNewUserStmt != nil {
 		if cerr := q.addNewUserStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing addNewUserStmt: %w", cerr)
+		}
+	}
+	if q.disablePageStmt != nil {
+		if cerr := q.disablePageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing disablePageStmt: %w", cerr)
+		}
+	}
+	if q.disableUserStmt != nil {
+		if cerr := q.disableUserStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing disableUserStmt: %w", cerr)
+		}
+	}
+	if q.enablePageStmt != nil {
+		if cerr := q.enablePageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing enablePageStmt: %w", cerr)
+		}
+	}
+	if q.enableUserStmt != nil {
+		if cerr := q.enableUserStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing enableUserStmt: %w", cerr)
 		}
 	}
 	if q.getOnePostStmt != nil {
@@ -65,6 +111,11 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing getOneUSerStmt: %w", cerr)
 		}
 	}
+	if q.listPagesStmt != nil {
+		if cerr := q.listPagesStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing listPagesStmt: %w", cerr)
+		}
+	}
 	if q.listPostsStmt != nil {
 		if cerr := q.listPostsStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing listPostsStmt: %w", cerr)
@@ -73,6 +124,11 @@ func (q *Queries) Close() error {
 	if q.listUsersStmt != nil {
 		if cerr := q.listUsersStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing listUsersStmt: %w", cerr)
+		}
+	}
+	if q.setConfigStmt != nil {
+		if cerr := q.setConfigStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing setConfigStmt: %w", cerr)
 		}
 	}
 	return err
@@ -112,25 +168,39 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db             DBTX
-	tx             *sql.Tx
-	addNewPostStmt *sql.Stmt
-	addNewUserStmt *sql.Stmt
-	getOnePostStmt *sql.Stmt
-	getOneUSerStmt *sql.Stmt
-	listPostsStmt  *sql.Stmt
-	listUsersStmt  *sql.Stmt
+	db              DBTX
+	tx              *sql.Tx
+	addNewPageStmt  *sql.Stmt
+	addNewPostStmt  *sql.Stmt
+	addNewUserStmt  *sql.Stmt
+	disablePageStmt *sql.Stmt
+	disableUserStmt *sql.Stmt
+	enablePageStmt  *sql.Stmt
+	enableUserStmt  *sql.Stmt
+	getOnePostStmt  *sql.Stmt
+	getOneUSerStmt  *sql.Stmt
+	listPagesStmt   *sql.Stmt
+	listPostsStmt   *sql.Stmt
+	listUsersStmt   *sql.Stmt
+	setConfigStmt   *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:             tx,
-		tx:             tx,
-		addNewPostStmt: q.addNewPostStmt,
-		addNewUserStmt: q.addNewUserStmt,
-		getOnePostStmt: q.getOnePostStmt,
-		getOneUSerStmt: q.getOneUSerStmt,
-		listPostsStmt:  q.listPostsStmt,
-		listUsersStmt:  q.listUsersStmt,
+		db:              tx,
+		tx:              tx,
+		addNewPageStmt:  q.addNewPageStmt,
+		addNewPostStmt:  q.addNewPostStmt,
+		addNewUserStmt:  q.addNewUserStmt,
+		disablePageStmt: q.disablePageStmt,
+		disableUserStmt: q.disableUserStmt,
+		enablePageStmt:  q.enablePageStmt,
+		enableUserStmt:  q.enableUserStmt,
+		getOnePostStmt:  q.getOnePostStmt,
+		getOneUSerStmt:  q.getOneUSerStmt,
+		listPagesStmt:   q.listPagesStmt,
+		listPostsStmt:   q.listPostsStmt,
+		listUsersStmt:   q.listUsersStmt,
+		setConfigStmt:   q.setConfigStmt,
 	}
 }

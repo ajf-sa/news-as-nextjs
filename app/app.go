@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -23,9 +22,6 @@ func main() {
 	engine := html.New("./views", ".html")
 	sessions = session.New()
 	config := fiber.Config{
-		// CaseSensitive:            true,
-		// StrictRouting:            true,
-		// DisableHeaderNormalizing: true,
 		ServerHeader: "go",
 		Views:        engine,
 	}
@@ -56,7 +52,7 @@ func main() {
 
 		ok := ctx.SendFile("./webapp/index.html")
 		if ok != nil {
-			return ctx.SendString("HI")
+			return ctx.SendString("Ok!")
 		}
 		return ok
 
@@ -71,11 +67,11 @@ func main() {
 func setupAuth(app *fiber.App, entiry *db.Entiry) {
 	auth := handlers.NewAuth(entiry, sessions)
 	acn := app.Group("auth")
-	acn.Post("/login", auth.TryLogin2)
+	acn.Post("/login", auth.PostLogin)
 	acn.Get("/login", auth.LoginForm)
 
-	acn.Post("/register", auth.SetUp)
-	acn.Get("/register", auth.SetUpForm)
+	acn.Post("/register", auth.PostRegister)
+	acn.Get("/register", auth.RegisterForm)
 
 	acn.Get("/logout", auth.Logout)
 
@@ -85,14 +81,14 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	cp := handlers.NewDashBoard(entiry)
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
+
 		store := sessions.Get(ctx)
 		userid := store.Get("user_id")
 		if userid != nil {
-			log.Println("this is protected", userid)
 			ctx.Locals("userid", userid)
 			return ctx.Next()
 		}
-		log.Println("this is will redirect: ", userid)
+
 		return ctx.Redirect(fmt.Sprintf("/auth/login?next=%s", next))
 
 	})
@@ -110,5 +106,5 @@ func setupRouter(app *fiber.App, entiry *db.Entiry) {
 	grp.Get("/sport", hd.SportPage)
 	grp.Get("/local", hd.LocalPage)
 	grp.Get("/", hd.HomePage)
-	// app.Get("/:id", hd.GetOnePost)
+
 }
