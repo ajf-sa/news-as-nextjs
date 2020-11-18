@@ -8,6 +8,7 @@
   },
   "scripts": {
     "snowpack": "snowpack",
+    "purgecss": "purgecss --config ./purgecss.config.js --output src/assets/compiled.css",
     "style": "tailwindcss build src/assets/styles/index.css -o src/assets/style.css",
     "start": "snowpack dev",
     "build": "snowpack build",
@@ -18,7 +19,6 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
-    "tailwindcss": "^1.9.6",
     "vue": "^3.0.2",
     "vue-router": "^4.0.0-rc.2"
   },
@@ -30,7 +30,9 @@
     "@snowpack/plugin-vue": "^2.2.4",
     "@snowpack/plugin-webpack": "^2.0.17",
     "esbuild": "^0.7.19",
+    "purgecss": "^2.3.0",
     "snowpack": "^2.16.1",
+    "tailwindcss": "^1.9.6",
     "typescript": "^4.0.3"
   }
 }
