@@ -4,7 +4,7 @@ WORKDIR webapp
 RUN npm install 
 RUN npm run build 
 
-FROM golang:1.15.3 AS GO_BUILD
+FROM golang:1.15.6-alpine3.12 AS GO_BUILD
 # RUN apk add build-base
 WORKDIR /app
 COPY app /app
