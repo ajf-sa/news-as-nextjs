@@ -1,0 +1,66 @@
+datasource db {
+    provider ="postgresql"
+    url = env("DATABASE_URL")
+}
+
+generator db {
+    provider ="go run github.com/prisma/prisma-client-go"
+}
+
+model config {
+    id Int @default(autoincrement()) @id
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+    seoTitle String?
+    seoDescript String?
+
+}
+
+model User {
+    id Int @default(autoincrement()) @id
+    username String @unique
+    password String
+    phone String @unique
+    email String?
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+    isActive Boolean @default(false)
+    isStaff Boolean @default(false)
+    isAdmin Boolean @default(false)
+    }
+
+model Post {
+    id Int @default(autoincrement()) @id
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+    title String 
+    descr String 
+    content String
+    slug String?
+    thumnailUrl String?
+    imageUrl String?
+    published Boolean @default(false)
+    tags Tag []
+}
+
+model Tag {
+    id Int @default(autoincrement()) @id
+    slug String @unique
+    arSlug String?
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+    post Post @relation(fields: [postID], references: [id])
+    postID Int 
+}
+
+model Image {
+    id String @default(cuid()) @id
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+    title String?
+    descr String?
+    size Float?
+    width Float?
+    height Float?
+
+}

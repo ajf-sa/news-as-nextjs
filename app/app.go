@@ -6,7 +6,6 @@ import (
 
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/handlers"
-	"github.com/alfuhigi/news-ajf-sa/providers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -19,6 +18,19 @@ import (
 var sessions *session.Session
 
 func main() {
+	client := db.NewClient()
+	if err := client.Prisma.Connect(); err != nil {
+
+		panic(err)
+	}
+	defer func() {
+		if err := client.Prisma.Disconnect(); err != nil {
+
+			panic(err)
+		}
+
+	}()
+
 	engine := html.New("./views", ".html")
 	sessions = session.New()
 	config := fiber.Config{
@@ -31,16 +43,14 @@ func main() {
 		}
 	}
 	app := fiber.New(config)
-	dbConn := providers.Connect()
-	entiry := db.NewEntiry(dbConn)
 
 	app.Use(logger.New())
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	setupAuth(app, entiry)
-	setupDashboard(app, entiry)
-	setupRouter(app, entiry)
+	setupAuth(app, client)
+	setupDashboard(app, client)
+	setupRouter(app, client)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
 		return ctx.SendString(`
 		User-agent: *
@@ -64,7 +74,7 @@ func main() {
 	}
 }
 
-func setupAuth(app *fiber.App, entiry *db.Entiry) {
+func setupAuth(app *fiber.App, entiry *db.PrismaClient) {
 	auth := handlers.NewAuth(entiry, sessions)
 	acn := app.Group("auth")
 	acn.Post("/login", auth.PostLogin)
@@ -77,7 +87,7 @@ func setupAuth(app *fiber.App, entiry *db.Entiry) {
 
 }
 
-func setupDashboard(app *fiber.App, entiry *db.Entiry) {
+func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	cp := handlers.NewDashBoard(entiry)
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
@@ -98,7 +108,7 @@ func setupDashboard(app *fiber.App, entiry *db.Entiry) {
 	dsh.Get("/users", cp.Users)
 	dsh.Get("/", cp.Dashboard)
 }
-func setupRouter(app *fiber.App, entiry *db.Entiry) {
+func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 	hd := handlers.NewHandler(entiry)
 	grp := app.Group("api")
 	grp.Get("/about", hd.AboutPage)

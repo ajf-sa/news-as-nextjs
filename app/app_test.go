@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/alfuhigi/news-ajf-sa/db"
+	db "github.com/alfuhigi/news-ajf-sa/db01"
 	"github.com/alfuhigi/news-ajf-sa/providers"
 )
 

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -10,7 +11,7 @@ import (
 )
 
 type Auth struct {
-	*db.Entiry
+	*db.PrismaClient
 	*session.Session
 }
 
@@ -18,13 +19,13 @@ type User struct {
 	Id       int
 	Username string
 	Password string
-	Email    string
+	Phone    string
 }
 
-func NewAuth(entiry *db.Entiry, session *session.Session) *Auth {
+func NewAuth(entiry *db.PrismaClient, session *session.Session) *Auth {
 	return &Auth{
-		Entiry:  entiry,
-		Session: session,
+		PrismaClient: entiry,
+		Session:      session,
 	}
 }
 
@@ -55,20 +56,23 @@ func (a *Auth) PostLogin(ctx *fiber.Ctx) error {
 	}
 
 	next := body.Next
-	isUser, err := a.GetOneUSer(ctx.Context(), body.User)
-	if err != nil {
-		log.Println(err)
-	}
-	if isUser.ID > 0 {
-		isMatch := providers.CheckPasswordHash(body.Password, isUser.Password)
+	isUser, err := a.User.FindFirst(
+		db.User.Username.Equals(body.User),
+	).Exec(ctx.Context())
 
-		if isMatch {
-			if isUser.IsActive {
-				a.Login(ctx, isUser.ID)
-				return ctx.Redirect(next)
-			}
+	if err != nil {
+		return ctx.Render("login", fiber.Map{"error": "اسم السمتخدم غير موجود"})
+	}
+	fmt.Println(isUser.Username)
+	isMatch := providers.CheckPasswordHash(body.Password, isUser.Password)
+
+	if isMatch {
+		if isUser.IsActive {
+			a.Login(ctx, isUser.ID)
+			return ctx.Redirect(next)
 		}
 	}
+
 	return ctx.Render("login", fiber.Map{"error": "اسم المستخدم او كلمة المرور خاطئة", "next": next})
 
 }
@@ -80,11 +84,13 @@ func (a *Auth) RegisterForm(ctx *fiber.Ctx) error {
 	return ctx.Render("register", fiber.Map{})
 
 }
+
 func (a *Auth) PostRegister(ctx *fiber.Ctx) error {
+
 	type Request struct {
 		User     string `form:"username"`
 		Password string `form:"password"`
-		Email    string `form:"email"`
+		Phone    string `form:"phone"`
 	}
 	var body Request
 	err := ctx.BodyParser(&body)
@@ -92,22 +98,22 @@ func (a *Auth) PostRegister(ctx *fiber.Ctx) error {
 	if err != nil {
 		log.Println(err)
 	}
-	isUser, err := a.GetOneUSer(ctx.Context(), body.User)
-	if err != nil {
-		log.Println(err)
-	}
-	if isUser.ID > 0 {
+	isUser, _ := a.User.FindFirst(
+		db.User.Username.Equals(body.User),
+	).Exec(ctx.Context())
+
+	if isUser != nil {
 		return ctx.Render("register", fiber.Map{"error": "اسم المستخدم موجود مسبقا"})
 	}
-	password, _ := providers.HashPassword(body.Password)
-	newUser, err := a.AddNewUser(ctx.Context(), db.AddNewUserParams{
-		Username: body.User,
-		Password: password,
-		Email:    body.Email})
 
-	if err != nil {
-		log.Println(err)
-	}
+	password, _ := providers.HashPassword(body.Password)
+
+	newUser, _ := a.User.CreateOne(
+		db.User.Username.Set(body.User),
+		db.User.Password.Set(password),
+		db.User.Phone.Set(body.Phone),
+	).Exec(ctx.Context())
+	fmt.Println(newUser.Username)
 	if newUser.ID > 0 {
 		return ctx.Redirect("/auth/login")
 	}
@@ -124,7 +130,7 @@ func (a *Auth) Logout(ctx *fiber.Ctx) error {
 	return ctx.Redirect("/auth/login")
 }
 
-func (a *Auth) Login(c *fiber.Ctx, id int32) {
+func (a *Auth) Login(c *fiber.Ctx, id int) {
 	store := a.Get(c)
 	defer store.Save()
 	store.Set("user_id", id)
