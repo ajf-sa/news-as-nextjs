@@ -5,6 +5,7 @@ services:
       build:
         context: ./
         dockerfile: Dockerfile
+      pid : host
       networks:
         - default
       # volumes:
@@ -16,6 +17,8 @@ services:
       container_name: newsajf01
       hostname: newsajf01
       restart: always
+      environment:
+        - DATABASE_URL=postgres://admin:secret@db01:5432/newsajf01
     
 
 networks:  

@@ -1,19 +1,19 @@
 package handlers
 
 import (
-	"github.com/alfuhigi/news-ajf-sa/db"
+	db "github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/gofiber/fiber/v2"
 )
 
 // Handler struct
 type Handler struct {
-	*db.Entiry
+	*db.PrismaClient
 }
 
 // NewHandler create Handler
-func NewHandler(entiry *db.Entiry) *Handler {
+func NewHandler(entiry *db.PrismaClient) *Handler {
 	return &Handler{
-		Entiry: entiry,
+		PrismaClient: entiry,
 	}
 }
 
