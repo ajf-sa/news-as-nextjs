@@ -18,8 +18,9 @@ RUN apt-get install -y
 RUN apt-get install nodejs
 # Prisma CLI
 RUN npm i -g prisma
-RUN go run github.com/prisma/prisma-client-go prefetch
+RUN go run github.com/prisma/prisma-client-go db push --preview-feature
 RUN go run github.com/prisma/prisma-client-go generate --schema=/app/schema.prisma
+RUN go run github.com/prisma/prisma-client-go prefetch
 
 
 
