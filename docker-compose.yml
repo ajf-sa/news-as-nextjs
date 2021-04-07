@@ -19,6 +19,8 @@ services:
       container_name: newsajf01
       hostname: newsajf01
       restart: always
+      # environment:
+      #   - DATABASE_URL=postgres://username:password@dbhost:5432/dbname
     
 
 networks:  
