@@ -18,6 +18,7 @@ model config {
 
 model User {
     id Int @default(autoincrement()) @id
+    avatar String?
     username String @unique
     password String
     phone String @unique
@@ -39,6 +40,8 @@ model Post {
     slug String?
     thumnailUrl String?
     imageUrl String?
+    ready Boolean @default(false)
+    draft Boolean @default(false)
     published Boolean @default(false)
     tags Tag []
 }
