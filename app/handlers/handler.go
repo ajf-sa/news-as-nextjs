@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	db "github.com/alfuhigi/news-ajf-sa/db"
+	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/gofiber/fiber/v2"
 )
 

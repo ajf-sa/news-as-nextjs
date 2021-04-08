@@ -4,7 +4,7 @@ import (
 	"log"
 	"strconv"
 
-	db "github.com/alfuhigi/news-ajf-sa/db"
+	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -42,7 +42,6 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 		pg = 1
 	}
 	offset := limit * (int(pg) - 1)
-	// users, err := d.ListUsers(ctx.Context(), db.ListUsersParams{Limit: limit, Offset: int32(offset)})
 	users, err := d.User.FindMany().Take(limit).Skip(offset).Exec(ctx.Context())
 	if err != nil {
 		log.Println(err)
@@ -51,7 +50,6 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 
 	next := true
 	nextNum := pg + 1
-	// lastPage, err := d.ListUsers(ctx.Context(), db.ListUsersParams{Limit: limit, Offset: int32(offset) + 1})
 	lastPage, err := d.User.FindMany().Take(limit).Skip(offset + 1).Exec(ctx.Context())
 	if err != nil {
 		log.Println(err)
@@ -64,7 +62,6 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 
 	prev := true
 	prevNum := pg - 1
-	// fisrtPage, err := d.ListUsers(ctx.Context(), db.ListUsersParams{Limit: limit, Offset: int32(offset) - 1})
 	firstPage, err := d.User.FindMany().Take(limit).Skip(offset - 1).Exec(ctx.Context())
 	if err != nil {
 		log.Println(err)
@@ -76,7 +73,7 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Render("users", fiber.Map{"userId": userId, "users": users, "page": pg, "prev": prev, "prevNum": prevNum, "next": next, "nextNum": nextNum}, "layout")
-	// return ctx.SendString("TODO")
+
 }
 
 func (d *DashBoard) Dashboard(ctx *fiber.Ctx) error {
