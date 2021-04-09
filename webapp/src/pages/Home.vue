@@ -20,7 +20,7 @@ export default{
   },methods:{
     morwelcome(){
 
-    fetch("http://localhost:3000/api/users")
+    fetch("/api/users")
     .then(response => response.json())
     .then(data => (this.message = data.test))
      

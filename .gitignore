@@ -3,4 +3,5 @@
 prod.env
 /.vscode
 debug.log
+/web_modules
 /webappold
