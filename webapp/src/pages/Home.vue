@@ -1,29 +1,29 @@
 
 <template>
-<Stories :items="items"></Stories>
+  <ul id="example-1">
+   <li v-for="user in $store.state.users" :key="user.id">
+  
+   <router-link :to="user.id">{{user.username}}</router-link>
+
+  <h1></h1>
+   </li>
+</ul>
 </template>
 
 <script>
-
-import { mapState } from "vuex";
-import Stories from "../components/Stories.vue";
-
+import {useStore} from "vuex"
+import {reactive,computed} from "vue"
 export default{
-  
-  name: "Home",
-  components: { Stories },
-  data(){
-    return {
-      message:"hello"
-    }
-  },computed:{
-     ...mapState(["items"]),
-  },methods:{
-  },
-   created() {
-    this.$store.dispatch("loadLatestTopItems");
-  },
+  setup(){
+    const store = useStore()
+    const state = reactive({
+      test:"hello ",
+    })
 
+    return{
+      state,
+    }
+  }
 }
 </script>
 

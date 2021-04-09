@@ -5,27 +5,18 @@
 </template>
 
 <script>
-
+import {reactive} from "vue"
 
 export default{
-  
-  data(){
-    return {
-      message:"Post"
-    }
-  },computed:{
-     greeting() {
-      return this.message + '!'
-    }
-  },methods:{
-    morwelcome(){
+setup(){
+  const state = reactive({
 
-    fetch("http://localhost:3000/api/users")
-    .then(response => response.json())
-    .then(data => (this.message = data.test))
-     
-    }
+  })
+
+  return{
+    state
   }
+}
 
 }
 </script>
