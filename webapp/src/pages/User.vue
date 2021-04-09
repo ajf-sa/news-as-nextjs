@@ -1,6 +1,6 @@
 
 <template>
-{{morwelcome()}}
+
   <h1>{{message}}</h1>
 </template>
 
@@ -11,7 +11,7 @@ export default{
   
   data(){
     return {
-      message:"hello"
+      message:"User"
     }
   },computed:{
      greeting() {

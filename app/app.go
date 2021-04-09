@@ -109,8 +109,10 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	dsh.Get("/", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
+	us := handlers.NewAuth(entiry, sessions)
 	hd := handlers.NewHandler(entiry)
 	grp := app.Group("api")
+	grp.Get("/users", us.APIRegister)
 	grp.Get("/about", hd.AboutPage)
 	grp.Get("/tech", hd.TechPage)
 	grp.Get("/sport", hd.SportPage)

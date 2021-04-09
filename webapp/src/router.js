@@ -1,16 +1,14 @@
-  
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./pages/Home.vue";
-import Local from "./pages/Local.vue";
-import Sport from "./pages/Sport.vue";
-import Tech from "./pages/Tech.vue";
-import About from "./pages/About.vue";
+import Post from "./pages/Post.vue";
+import Config from "./pages/Config.vue";
+import User from "./pages/User.vue";
+
 const routes = [
   { path: "/", component: Home },
-  { path: "/local", component: Local },
-  { path: "/sport", component: Sport },
-  { path: "/tech", component: Tech },
-  { path: "/about", component: About },
+  { path: "/post", component: Post },
+  { path: "/config", component: Config },
+  { path: "/user", component: User },
 ]
 const router = createRouter({
     history: createWebHistory(),
