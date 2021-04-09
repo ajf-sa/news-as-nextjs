@@ -34,9 +34,8 @@ func (d *DashBoard) Setting(ctx *fiber.Ctx) error {
 func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 	userId := ctx.Locals("userid")
 	var limit int
-	limit = 1
+	limit = 2
 	pagnation := ctx.Query("page", "1")
-	log.Println(pagnation)
 	pg, err := strconv.ParseInt(pagnation, 10, 32)
 	if pg == 0 {
 		pg = 1
@@ -50,7 +49,7 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 
 	next := true
 	nextNum := pg + 1
-	lastPage, err := d.User.FindMany().Take(limit).Skip(offset + 1).Exec(ctx.Context())
+	lastPage, err := d.User.FindMany().Take(limit).Skip(offset + limit).Exec(ctx.Context())
 	if err != nil {
 		log.Println(err)
 
@@ -62,12 +61,8 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 
 	prev := true
 	prevNum := pg - 1
-	firstPage, err := d.User.FindMany().Take(limit).Skip(offset - 1).Exec(ctx.Context())
-	if err != nil {
-		log.Println(err)
-
-	}
-	if len(firstPage) == 0 {
+	firstPage, err := d.User.FindMany().Take(limit).Skip(offset - limit).Exec(ctx.Context())
+	if len(firstPage) == 0 || len(users) == 0 {
 
 		prev = false
 	}
