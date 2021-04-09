@@ -86,8 +86,11 @@ func (a *Auth) RegisterForm(ctx *fiber.Ctx) error {
 }
 
 func (a *Auth) APIRegister(ctx *fiber.Ctx) error {
-
-	return ctx.JSON(fiber.Map{"test": "Hi I'm from backend"})
+	users, err := a.User.FindMany().Exec(ctx.Context())
+	if err != nil {
+		log.Println(err)
+	}
+	return ctx.JSON(users)
 
 }
 

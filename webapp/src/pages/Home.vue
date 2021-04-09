@@ -1,31 +1,28 @@
 
 <template>
-{{morwelcome()}}
-  <h1>{{message}}</h1>
+<Stories :items="items"></Stories>
 </template>
 
 <script>
 
+import { mapState } from "vuex";
+import Stories from "../components/Stories.vue";
 
 export default{
   
+  name: "Home",
+  components: { Stories },
   data(){
     return {
       message:"hello"
     }
   },computed:{
-     greeting() {
-      return this.message + '!'
-    }
+     ...mapState(["items"]),
   },methods:{
-    morwelcome(){
-
-    fetch("/api/users")
-    .then(response => response.json())
-    .then(data => (this.message = data.test))
-     
-    }
-  }
+  },
+   created() {
+    this.$store.dispatch("loadLatestTopItems");
+  },
 
 }
 </script>

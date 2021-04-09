@@ -9,9 +9,14 @@
 
 <script>
 import Header from "./components/Header.vue";
+
 export default {
- components: {Header},
- 
+  name: "app",
+  components: {Header},
+  data() {
+    return {};
+  },
+
  
 }
 </script>
