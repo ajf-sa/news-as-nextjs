@@ -30,7 +30,7 @@ FROM golang:1.16.3-alpine3.13
 RUN apk add build-base
 WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-COPY --from=JS_BUILD /webapp/build* ./webapp/
+COPY --from=JS_BUILD /webapp/dist* ./webapp/
 COPY --from=GO_BUILD app .
 RUN go get -a
 RUN go build -ldflags="-s -w" -o app .
