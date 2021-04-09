@@ -1,4 +1,4 @@
-FROM node:15.12 AS JS_BUILD
+FROM node:15.14.0-buster AS JS_BUILD
 COPY webapp /webapp
 WORKDIR webapp
 RUN npm install 
