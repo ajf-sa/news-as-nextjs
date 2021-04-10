@@ -8,24 +8,6 @@
 
 
 export default{
-  
-  data(){
-    return {
-      message:"Config"
-    }
-  },computed:{
-     greeting() {
-      return this.message + '!'
-    }
-  },methods:{
-    morwelcome(){
-
-    fetch("http://localhost:3000/api/users")
-    .then(response => response.json())
-    .then(data => (this.message = data.test))
-     
-    }
-  }
 
 }
 </script>

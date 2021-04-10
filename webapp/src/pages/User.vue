@@ -1,32 +1,34 @@
 
 <template>
-
-  <h1>{{message}}</h1>
+  <div v-if="user">
+    <h1>
+    {{user.username}}
+    </h1>
+    </div>
 </template>
 
 <script>
-
-
+import {useStore} from "vuex"
+import {onMounted,computed} from "vue"
+import {useRoute} from "vue-router";
 export default{
-  
-  data(){
-    return {
-      message:"User"
-    }
-  },computed:{
-     greeting() {
-      return this.message + '!'
-    }
-  },methods:{
-    morwelcome(){
+  setup(){
+    const store = useStore()
+    const route = useRoute()
+    const user =computed(() => store.getters.user)
 
-    fetch("http://localhost:3000/api/users")
-    .then(response => response.json())
-    .then(data => (this.message = data.test))
-     
+    onMounted(()=>{
+        store.dispatch("getOneUser",route.params.id)
+        store.commit("SET_ONE_USER")
+       
+        
+      
+    })
+    
+    return{
+      user
     }
   }
-
 }
 </script>
 

@@ -9,6 +9,7 @@ const routes = [
   { path: "/post", component: Post },
   { path: "/config", component: Config },
   { path: "/user", component: User },
+  { path: "/user/:id", component: User },
 ]
 const router = createRouter({
     history: createWebHistory(),
