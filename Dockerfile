@@ -11,8 +11,8 @@ FROM  golang:1.16.3-buster AS GO_BUILD
 # RUN apk add build-base
 WORKDIR /app
 COPY app /app
-# RUN go mod download
-RUN go get -d -v
+RUN go mod download
+# RUN go get -d -v
 # Node PPA
 RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 # Downloading Node
