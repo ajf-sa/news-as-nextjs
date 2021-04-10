@@ -121,6 +121,7 @@ func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 	us := handlers.NewAuth(entiry, sessions)
 	hd := handlers.NewHandler(entiry)
 	grp := app.Group("api")
+	grp.Get("/user/:id", us.GetOneUser)
 	grp.Get("/users", us.APIRegister)
 	grp.Get("/about", hd.AboutPage)
 	grp.Get("/tech", hd.TechPage)

@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"strconv"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/providers"
@@ -91,6 +92,16 @@ func (a *Auth) APIRegister(ctx *fiber.Ctx) error {
 		log.Println(err)
 	}
 	return ctx.JSON(users)
+
+}
+
+func (a *Auth) GetOneUser(ctx *fiber.Ctx) error {
+	userId, _ := strconv.Atoi(ctx.Params("id", ""))
+	user, err := a.User.FindUnique(db.User.ID.Equals(userId)).Exec(ctx.Context())
+	if err != nil {
+		log.Println(err)
+	}
+	return ctx.JSON(user)
 
 }
 
