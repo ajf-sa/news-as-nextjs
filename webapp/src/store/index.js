@@ -1,18 +1,42 @@
 import { createStore } from "vuex";
+import axios from 'axios'
 
 const store = createStore({
 state:{
   title:"Vuex Store",
-  users: [
-    {id:1,avatar:null,username:"north",password:"$2a$08$RVtfPN5ra1QslcX5GZcyFefvLJ./peWSvW0LjwFXoZsc7guw2gjem",phone:"0597417580",email:null,createAt:"2021-04-08T20:35:51.69Z",updateAt:"2021-04-08T20:35:51.69Z",isActive:true,isStaff:false,isAdmin:false},
-    {id:8,avatar:null,username:"aziz",password:"$2a$08$Jo5zs6iEEpDSQQ11dF6XCunqMDTb76yx6r9ijAUItF3Py.3yPqav6",phone:"owerifjwoef",email:null,createAt:"2021-04-09T13:07:40.472Z",updateAt:"2021-04-09T13:07:40.472Z",isActive:false,isStaff:false,isAdmin:false}
-  ],
+  users: [],
+  user:{id:0,username:""}
 },
-getters:{},
+getters:{
+  users(state){
+    return state.users
+  },
+  user(state){
+    return state.user
+  }
+},
 mutations:{
-
+  SET_USERS(state,users){
+    state.users = users
+  },
+  SET_ONE_USER(state,user){
+    state.user = user
+  }
 },
-actions:{}
+actions:{
+  getUsers({commit}){
+    axios.get("/api/users")
+    .then(res =>{
+      console.log(res.data)
+      commit("SET_USERS",res.data)})},
+  getOneUser({commit},id){
+    axios.get(`/api/user/`+ id)
+    .then(res => {
+      console.log(res.data)
+      commit("SET_ONE_USER",res.data)
+    })
+  }
+}
 })
 
 export default store 
