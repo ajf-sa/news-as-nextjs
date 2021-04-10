@@ -1,32 +1,29 @@
 
 <template>
-{{morwelcome()}}
-  <h1>{{message}}</h1>
+  <ul id="example-1">
+   <li v-for="user in $store.state.users" :key="user.id">
+  
+   <router-link :to="user.id">{{user.username}}</router-link>
+
+  <h1></h1>
+   </li>
+</ul>
 </template>
 
 <script>
-
-
+import {useStore} from "vuex"
+import {reactive,computed} from "vue"
 export default{
-  
-  data(){
-    return {
-      message:"hello"
-    }
-  },computed:{
-     greeting() {
-      return this.message + '!'
-    }
-  },methods:{
-    morwelcome(){
+  setup(){
+    const store = useStore()
+    const state = reactive({
+      test:"hello ",
+    })
 
-    fetch("http://localhost:3000/api/users")
-    .then(response => response.json())
-    .then(data => (this.message = data.test))
-     
+    return{
+      state,
     }
   }
-
 }
 </script>
 

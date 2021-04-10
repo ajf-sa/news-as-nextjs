@@ -57,6 +57,15 @@ func main() {
 		Allow: /
 		`)
 	})
+	app.Static("/cp", "webapp")
+	app.Get("/cp", func(ctx *fiber.Ctx) error {
+		ok := ctx.SendFile("./webapp/index.html")
+		if ok != nil {
+			return ctx.SendString("Ok!")
+		}
+		return ok
+	})
+
 	app.Static("/", "webapp")
 	app.Get("/*", func(ctx *fiber.Ctx) error {
 
@@ -112,6 +121,7 @@ func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 	us := handlers.NewAuth(entiry, sessions)
 	hd := handlers.NewHandler(entiry)
 	grp := app.Group("api")
+	grp.Get("/user/:id", us.GetOneUser)
 	grp.Get("/users", us.APIRegister)
 	grp.Get("/about", hd.AboutPage)
 	grp.Get("/tech", hd.TechPage)

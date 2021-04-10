@@ -1,6 +1,7 @@
-FROM node:15.12 AS JS_BUILD
+FROM node:15.14.0-buster AS JS_BUILD
 COPY webapp /webapp
 WORKDIR webapp
+RUN npm install -g npm@7.9.0
 RUN npm install 
 RUN npm run build 
 
@@ -10,7 +11,8 @@ FROM  golang:1.16.3-buster AS GO_BUILD
 # RUN apk add build-base
 WORKDIR /app
 COPY app /app
-RUN go mod download
+# RUN go mod download
+RUN go get -d -v
 # Node PPA
 RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 # Downloading Node
