@@ -59,16 +59,16 @@ func main() {
 	})
 	app.Static("/cp", "webapp")
 
-	app.Static("/", "webapp")
-	app.Get("/*", func(ctx *fiber.Ctx) error {
+	// app.Static("/", "webapp")
+	// app.Get("/*", func(ctx *fiber.Ctx) error {
 
-		ok := ctx.SendFile("./webapp/index.html")
-		if ok != nil {
-			return ctx.SendString("Ok!")
-		}
-		return ctx.SendString("OK!")
+	// 	ok := ctx.SendFile("./webapp/index.html")
+	// 	if ok != nil {
+	// 		return ctx.SendString("Ok!")
+	// 	}
+	// 	return ctx.SendString("OK!")
 
-	})
+	// })
 
 	err := app.Listen(":3000")
 	if err != nil {
@@ -108,7 +108,7 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	dsh.Get("/posts", cp.GetListPost)
 	dsh.Get("/setting", cp.Setting)
 	dsh.Get("/users", cp.Users)
-	dsh.Get("/", cp.Dashboard)
+	dsh.Get("/*", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 	us := handlers.NewAuth(entiry, sessions)
