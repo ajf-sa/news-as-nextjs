@@ -59,7 +59,7 @@ func main() {
 	})
 	// app.Static("/cp", "webapp")
 
-	// app.Static("/", "webapp")
+	app.Static("/", "webapp")
 	// app.Get("/*", func(ctx *fiber.Ctx) error {
 
 	// 	ok := ctx.SendFile("./webapp/index.html")
