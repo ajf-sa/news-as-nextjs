@@ -57,9 +57,9 @@ func main() {
 		Allow: /
 		`)
 	})
-	app.Static("/cp", "webapp")
+	// app.Static("/cp", "webapp")
 
-	// app.Static("/", "webapp")
+	app.Static("/", "webapp")
 	// app.Get("/*", func(ctx *fiber.Ctx) error {
 
 	// 	ok := ctx.SendFile("./webapp/index.html")
