@@ -5,11 +5,11 @@ import Config from "../pages/Config.vue";
 import User from "../pages/User.vue";
 
 const routes = [
-  { path: "/cp", component: Home },
-  { path: "/cp/post", component: Post },
-  { path: "/cp/config", component: Config },
-  { path: "/cp/user", component: User },
-  { path: "/cp/user/:id", component: User },
+  { path: "^", component: Home },
+  { path: "post", component: Post },
+  { path: "config", component: Config },
+  { path: "user", component: User },
+  { path: "user/:id", component: User },
 ]
 const router = createRouter({
     history: createWebHistory(),
