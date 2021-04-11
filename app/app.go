@@ -59,16 +59,11 @@ func main() {
 	})
 	// app.Static("/cp", "webapp")
 
-	app.Static("/cp", "webapp")
-	// app.Get("/*", func(ctx *fiber.Ctx) error {
+	app.Static("/", "webapp")
+	app.Get("/", func(ctx *fiber.Ctx) error {
 
-	// 	ok := ctx.SendFile("./webapp/index.html")
-	// 	if ok != nil {
-	// 		return ctx.SendString("Ok!")
-	// 	}
-	// 	return ctx.SendString("OK!")
-
-	// })
+		return ctx.SendString("Ok!")
+	})
 
 	err := app.Listen(":3000")
 	if err != nil {
