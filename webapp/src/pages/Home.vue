@@ -25,9 +25,6 @@ export default{
     onMounted(()=>{
         store.dispatch("getUsers");
         store.commit("SET_USERS")
-       
-        
-      
     })
     
     return{
