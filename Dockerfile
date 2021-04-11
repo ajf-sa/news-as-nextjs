@@ -23,7 +23,7 @@ RUN go build -ldflags="-s -w" -o app .
 # CMD ./app -prefork
 
 
-FROM golang:1.16.3-alpine3.13
+FROM golang:1.16.3-buster
 WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 COPY --from=BUILD /build/dist* ./webapp/
