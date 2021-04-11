@@ -48,7 +48,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	app.Static("/cp", "webapp")
+	app.Static("/cp/", "webapp")
 
 	setupAuth(app, client)
 	setupDashboard(app, client)
