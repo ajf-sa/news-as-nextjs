@@ -3,6 +3,7 @@ COPY webapp /webapp
 WORKDIR webapp
 RUN npm install -g npm@7.9.0
 RUN npm install 
+RUN npm install --D
 RUN npm run build 
 
 
@@ -23,18 +24,23 @@ RUN npm i -g prisma
 RUN go run github.com/prisma/prisma-client-go db push --preview-feature
 RUN go run github.com/prisma/prisma-client-go generate --schema=/app/schema.prisma
 RUN go run github.com/prisma/prisma-client-go prefetch
-
-
-
-
-
-FROM golang:1.16.3-alpine3.13
-RUN apk add build-base
-WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 COPY --from=JS_BUILD /webapp/dist* ./webapp/
-COPY --from=GO_BUILD app .
-RUN go get -a
 RUN go build -ldflags="-s -w" -o app .
 RUN ["chmod", "+x", "./app"]
 CMD ./app -prefork
+
+
+
+
+
+# FROM golang:1.16.3-alpine3.13
+# RUN apk add build-base
+# WORKDIR /app
+# RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+# COPY --from=JS_BUILD /webapp/dist* ./webapp/
+# COPY --from=GO_BUILD app .
+# RUN go get -a
+# RUN go build -ldflags="-s -w" -o app .
+# RUN ["chmod", "+x", "./app"]
+# CMD ./app -prefork
