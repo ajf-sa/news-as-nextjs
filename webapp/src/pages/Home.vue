@@ -5,7 +5,7 @@
    <li v-for="user in users" :key='user.id'>
 
   
-   <router-link :to="{path:'/user/'+user.id}" > <h1>{{user.username}}</h1></router-link>
+   <router-link :to="{path:'/cp/user/'+user.id}" > <h1>{{user.username}}</h1></router-link>
 
    </li>
    </div>
