@@ -73,10 +73,5 @@ func (d *DashBoard) Users(ctx *fiber.Ctx) error {
 
 func (d *DashBoard) Dashboard(ctx *fiber.Ctx) error {
 	// userId := ctx.Locals("userid")
-	ok := ctx.SendFile("./webapp/index.html")
-	if ok != nil {
-		return ctx.SendString("Ok!")
-	}
-	return ok
-	// return ctx.Render("dashboard", fiber.Map{"userId": userId}, "layout")
+	return ctx.SendFile("./webapp/index.html")
 }
