@@ -26,7 +26,7 @@ RUN go build -ldflags="-s -w" -o app .
 FROM golang:1.16.3-alpine3.13
 WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-COPY --from=BUILD /webapp/dist* ./webapp/
+COPY --from=BUILD /build/dist* ./webapp/
 COPY --from=BUILD app .
 RUN ["chmod", "+x", "./app"]
 CMD ./app -prefork
