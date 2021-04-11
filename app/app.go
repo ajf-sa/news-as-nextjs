@@ -47,7 +47,7 @@ func main() {
 	app.Use(logger.New())
 	app.Use(recover.New())
 	app.Use(cors.New())
-
+	app.Static("/cp", "webapp")
 	setupAuth(app, client)
 	setupDashboard(app, client)
 	setupRouter(app, client)
@@ -57,8 +57,6 @@ func main() {
 		Allow: /
 		`)
 	})
-
-	app.Static("/cp", "webapp")
 
 	app.Get("/", func(ctx *fiber.Ctx) error {
 
