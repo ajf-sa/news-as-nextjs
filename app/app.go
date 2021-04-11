@@ -59,12 +59,11 @@ func main() {
 	})
 	// app.Static("/cp", "webapp")
 
-	app.Static("/cp", "webapp")
 	app.Get("/", func(ctx *fiber.Ctx) error {
 
 		return ctx.SendString("Ok!")
 	})
-
+	app.Static("/", "webapp")
 	err := app.Listen(":3000")
 	if err != nil {
 		panic(err)
