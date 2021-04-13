@@ -48,7 +48,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	app.Static("/cp", "webapp")
+	// app.Static("/cp", "webapp")
 
 	setupAuth(app, client)
 	setupDashboard(app, client)
@@ -102,6 +102,7 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	// dsh.Get("/posts", cp.GetListPost)
 	// dsh.Get("/setting", cp.Setting)
 	// dsh.Get("/users", cp.Users)
+	dsh.Static("/", "webapp")
 	dsh.Get("/*", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
