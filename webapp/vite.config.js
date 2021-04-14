@@ -34,7 +34,7 @@ export default ({ command, mode }) => {
   } else {
     return {
       // build specific config
-      base:"/cp/",
+      // base:"/cp/",
       build:{
         assetsDir:""
       },
