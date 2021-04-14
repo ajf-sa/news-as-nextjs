@@ -49,9 +49,10 @@ func main() {
 	app.Use(cors.New())
 
 	// app.Static("/cp", "webapp")
+	app.Static("/", "webapp")
 
 	setupAuth(app, client)
-	setupDashboard(app, client)
+	// setupDashboard(app, client)
 	setupRouter(app, client)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
 		return ctx.SendString(`
@@ -102,7 +103,6 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	// dsh.Get("/posts", cp.GetListPost)
 	// dsh.Get("/setting", cp.Setting)
 	// dsh.Get("/users", cp.Users)
-	dsh.Static("/", "webapp")
 	dsh.Get("/", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
