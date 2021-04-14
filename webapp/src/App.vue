@@ -1,10 +1,7 @@
 <template>
-<div>
-  <Header />
-   <div class="w-full flex">
-    <router-view></router-view>
-  </div>
-</div>
+
+    <router-view />
+
 </template>
 
 <script>
@@ -20,8 +17,5 @@ export default {
 
 <style>
 
-html{
-  direction: rtl;
-}
 
 </style>

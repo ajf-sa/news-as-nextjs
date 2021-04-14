@@ -5,7 +5,8 @@ const store = createStore({
 state:{
   title:"Vuex Store",
   users: [],
-  user:{id:0,username:""}
+  login:false,
+  user:null
 },
 getters:{
   users(state){
@@ -13,6 +14,9 @@ getters:{
   },
   user(state){
     return state.user
+  },
+  login(state){
+    return state.login
   }
 },
 mutations:{

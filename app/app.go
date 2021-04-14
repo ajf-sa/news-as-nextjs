@@ -103,7 +103,7 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	// dsh.Get("/setting", cp.Setting)
 	// dsh.Get("/users", cp.Users)
 	dsh.Static("/", "webapp")
-	dsh.Get("/*", cp.Dashboard)
+	dsh.Get("/", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 	us := handlers.NewAuth(entiry, sessions)
