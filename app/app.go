@@ -49,7 +49,6 @@ func main() {
 	app.Use(cors.New())
 
 	// app.Static("/cp", "webapp")
-	app.Static("/", "webapp")
 
 	setupAuth(app, client)
 	// setupDashboard(app, client)
@@ -61,10 +60,13 @@ func main() {
 		`)
 	})
 
-	app.Get("/", func(ctx *fiber.Ctx) error {
+	app.Static("/", "webapp")
 
-		return ctx.SendString("Ok!")
+	app.Get("/*", func(ctx *fiber.Ctx) error {
+
+		return ctx.SendFile("./webapp/index.html")
 	})
+
 	err := app.Listen(":3000")
 	if err != nil {
 		panic(err)
