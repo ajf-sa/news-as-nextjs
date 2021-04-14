@@ -1,15 +1,8 @@
-
 <template>
-
-  <h1>{{message}}</h1>
+<h1>404</h1>
 </template>
 
 <script>
-
-
-export default{
-
-}
 </script>
 
 
