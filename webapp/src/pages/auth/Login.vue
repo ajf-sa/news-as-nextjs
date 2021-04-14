@@ -1,3 +1,51 @@
 <template>
-register
+<div class="flex justify-center min-h-screen bg-gray-200">
+  <div class="w-full max-w-xs m-auto ">
+    <h1 class="text-center text-red-500 italic"></h1>
+    <form  class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" v-on:submit.prevent >
+      <input type="hidden" name="next" value="/cp">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+          اسم المستخدم
+        </label>
+        <input v-model="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="username" id="username" type="text" placeholder="اسم المستخدم">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+          كلمة المرور
+        </label>
+        <input v-model="password" class="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" placeholder="كلمة المرور">
+        <p class="text-red-500 text-xs italic"></p>
+      </div>
+      <div class="flex items-center justify-between">
+         <button @click="submit" class="bg-blue-100 px-4 py-2 text-xs font-semibold tracking-wider text-blue-600 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">دخول</button>
+        <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+          
+        </a>
+      </div>
+    </form>
+    <p class="text-center text-gray-500 text-xs">
+      <h1></h1>
+    </p>
+  </div>
+</div>
 </template>
+
+<script>
+import { ref } from "vue"
+export default{
+    setup(){
+        const name = ref("");
+        const password = ref("");
+        function submit(){
+            console.log(name.value, password.value);
+        }
+        return {
+            name,
+            password,
+            submit
+        }
+    }
+
+}
+</script>
