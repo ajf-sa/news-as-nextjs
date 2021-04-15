@@ -48,11 +48,10 @@ func main() {
 	app.Use(recover.New())
 	app.Use(cors.New())
 
-	// app.Static("/cp", "webapp")
-
-	setupAuth(app, client)
+	// setupAuth(app, client)
 	// setupDashboard(app, client)
-	setupRouter(app, client)
+	// setupRouter(app, client)
+	setupAPI(app, client)
 	app.Get("/robots.txt", func(ctx *fiber.Ctx) error {
 		return ctx.SendString(`
 		User-agent: *
@@ -78,10 +77,8 @@ func setupAuth(app *fiber.App, entiry *db.PrismaClient) {
 	acn := app.Group("auth")
 	acn.Post("/login", auth.PostLogin)
 	acn.Get("/login", auth.LoginForm)
-
 	acn.Post("/register", auth.PostRegister)
 	acn.Get("/register", auth.RegisterForm)
-
 	acn.Get("/logout", auth.Logout)
 
 }
@@ -90,7 +87,6 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 	cp := handlers.NewDashBoard(entiry)
 	dsh := app.Group("cp", func(ctx *fiber.Ctx) error {
 		next := string(ctx.Request().RequestURI())
-
 		store := sessions.Get(ctx)
 		userid := store.Get("user_id")
 		if userid != nil {
@@ -102,9 +98,9 @@ func setupDashboard(app *fiber.App, entiry *db.PrismaClient) {
 
 	})
 
-	// dsh.Get("/posts", cp.GetListPost)
-	// dsh.Get("/setting", cp.Setting)
-	// dsh.Get("/users", cp.Users)
+	dsh.Get("/posts", cp.GetListPost)
+	dsh.Get("/setting", cp.Setting)
+	dsh.Get("/users", cp.Users)
 	dsh.Get("/", cp.Dashboard)
 }
 func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
@@ -119,4 +115,12 @@ func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 	grp.Get("/local", hd.LocalPage)
 	grp.Get("/", hd.HomePage)
 
+}
+
+func setupAPI(app *fiber.App, entiry *db.PrismaClient) {
+	api := handlers.NewAPI(entiry, sessions)
+
+	grp := app.Group("api")
+
+	grp.Get("/user", api.GetOneUser)
 }
