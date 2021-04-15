@@ -41,7 +41,17 @@ func (a *API) GetOneUser(ctx *fiber.Ctx) error {
 
 }
 func (a *API) SetOneUser(ctx *fiber.Ctx) error {
-	return nil
+	type User struct {
+		UserName string `json:"username" xml:"username" form:"username"`
+		Password string `json:"password" xml:"password" form:"password"`
+		Phone    string `json:"phone" xml:"phone" form:"phone"`
+	}
+	u := new(User)
+	if err := ctx.BodyParser(u); err != nil {
+		return err
+	}
+	log.Println(u.UserName, u.Password, u.Phone)
+	return ctx.JSON(fiber.Map{"login": true, "token": 111111111111})
 }
 
 func (a *API) SetActiveOneUser(ctx *fiber.Ctx) error {
