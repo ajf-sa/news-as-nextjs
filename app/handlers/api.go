@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
@@ -21,6 +23,13 @@ func NewAPI(entiry *db.PrismaClient, session *session.Session) *API {
 	}
 }
 
+func (a *API) Protected(ctx *fiber.Ctx) error {
+	fmt.Println("1st route!")
+	userID, _ := providers.ParseToken(ctx, "secret")
+	ctx.Locals("userId", strconv.Itoa(int(userID)))
+	return ctx.Next()
+}
+
 ///####### App ########//
 func (a *API) SetApp(ctx *fiber.Ctx) error {
 	return nil
@@ -29,9 +38,12 @@ func (a *API) SetApp(ctx *fiber.Ctx) error {
 ///####### User ########//
 
 func (a *API) GetLoginByToken(ctx *fiber.Ctx) error {
-
-	userID, _ := providers.ParseToken(ctx, "secret")
-	user, _ := a.User.FindUnique(db.User.ID.Equals(int(userID))).Exec(ctx.Context())
+	userId, _ := strconv.Atoi(ctx.Locals("userId").(string))
+	log.Println(userId)
+	user, err := a.User.FindUnique(db.User.ID.Equals(userId)).Exec(ctx.Context())
+	if err != nil {
+		return ctx.JSON(fiber.Map{"login": false, "error": "nologin"})
+	}
 	return ctx.JSON(fiber.Map{"login": true, "username": user.Username})
 }
 func (a *API) GetListUser(ctx *fiber.Ctx) error {

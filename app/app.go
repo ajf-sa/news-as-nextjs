@@ -120,7 +120,7 @@ func setupRouter(app *fiber.App, entiry *db.PrismaClient) {
 func setupAPI(app *fiber.App, entiry *db.PrismaClient) {
 	api := handlers.NewAPI(entiry, sessions)
 
-	grp := app.Group("api")
+	grp := app.Group("api", api.Protected)
 	grp.Post("/user/new", api.SetOneUser)
 	grp.Post("/user/login", api.GetLoginUser)
 	grp.Post("/user/token", api.GetLoginByToken)
