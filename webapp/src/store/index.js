@@ -8,9 +8,13 @@ state:{
   title:"Vuex Store",
   users: [],
   login:false,
+  username:"",
   user:{username:"",password:"",phone:""}
 },
 getters:{
+  username(state){
+    return state.username
+  },
   users(state){
     return state.users
   },
@@ -22,6 +26,9 @@ getters:{
   }
 },
 mutations:{
+  SET_USERNAME(state,username){
+    state.username= username
+  },
   SET_USERS(state,users){
     state.users = users
   },
@@ -33,16 +40,41 @@ mutations:{
   }
 },
 actions:{
+  loginByToken({commit}){
+    axios.post("/api/user/token")
+    .then(res => {
+      if(res.data.login){
+        console.log(res.data)
+        commit("SET_LOGIN_USER",res.data.login)
+        commit("SET_USERNAME",res.data.username)
+        router.push("/cp")
+    }})
+  },
+  setLoginUser({commit},user){
+    user = user.value
+    console.log(user.username,user.password)
+    axios.post("/api/user/login",user)
+    .then(res =>{
+      if(res.data.login){
+        console.log(res.data)
+        commit("SET_LOGIN_USER",res.data.login)
+        localStorage.setItem('token', res.data.token);
+        router.push("/cp")
+      }else{
+        console.log(res.data)
+      }
+    })
+  },
   setOneUser({commit},user){
     
     user = user.value
     console.log(user.username,user.password,user.phone)
     axios.post("/api/user/new",user,)
     .then(res => {
-      if(res.data.login){
-        commit("SET_LOGIN_USER",res.data.login)
-        localStorage.setItem('token', res.data.token);
+      if(res.data.registed){
         router.push("/cp")
+      }else{
+        console.log(res.data)
       }
     
 
@@ -64,7 +96,7 @@ actions:{
   logout({commit}){
     commit("SET_LOGIN_USER",false)
     localStorage.removeItem("token")
-    router.push("/auth/login")
+    router.go("")
   }
 },
 

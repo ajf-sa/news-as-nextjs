@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"log"
 	"strconv"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
+	"github.com/alfuhigi/news-ajf-sa/providers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/session/v2"
 )
@@ -28,16 +28,53 @@ func (a *API) SetApp(ctx *fiber.Ctx) error {
 
 ///####### User ########//
 
+func (a *API) GetLoginByToken(ctx *fiber.Ctx) error {
+
+	userID, _ := providers.ParseToken(ctx, "secret")
+	user, _ := a.User.FindUnique(db.User.ID.Equals(int(userID))).Exec(ctx.Context())
+	return ctx.JSON(fiber.Map{"login": true, "username": user.Username})
+}
 func (a *API) GetListUser(ctx *fiber.Ctx) error {
 	return nil
+
 }
+func (a *API) GetLoginUser(ctx *fiber.Ctx) error {
+
+	type User struct {
+		UserName string `json:"username" xml:"username" form:"username"`
+		Password string `json:"password" xml:"password" form:"password"`
+	}
+
+	u := new(User)
+	if err := ctx.BodyParser(u); err != nil {
+		return err
+	}
+
+	isUser, _ := a.User.FindFirst(
+		db.User.Username.Equals(u.UserName),
+	).Exec(ctx.Context())
+
+	isMatch := providers.CheckPasswordHash(u.Password, isUser.Password)
+
+	if isMatch {
+		if isUser.IsActive {
+			token, _ := providers.CreateToken(ctx, uint(isUser.ID), "secret")
+			return ctx.JSON(fiber.Map{"login": true, "token": token.Hash})
+		}
+		return ctx.JSON(fiber.Map{"login": false, "error": "user is not active"})
+
+	}
+	return ctx.JSON(fiber.Map{"login": false, "error": "username error or password error"})
+}
+
 func (a *API) GetOneUser(ctx *fiber.Ctx) error {
+
 	userId, _ := strconv.Atoi(ctx.Params("id", ""))
 	user, err := a.User.FindUnique(db.User.ID.Equals(userId)).Exec(ctx.Context())
 	if err != nil {
-		log.Println(err)
+		return ctx.JSON(fiber.Map{"error": err})
 	}
-	return ctx.JSON(user)
+	return ctx.JSON(fiber.Map{"user": user})
 
 }
 func (a *API) SetOneUser(ctx *fiber.Ctx) error {
@@ -50,8 +87,23 @@ func (a *API) SetOneUser(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(u); err != nil {
 		return err
 	}
-	log.Println(u.UserName, u.Password, u.Phone)
-	return ctx.JSON(fiber.Map{"login": true, "token": 111111111111})
+	isUser, _ := a.User.FindFirst(
+		db.User.Username.Equals(u.UserName),
+	).Exec(ctx.Context())
+
+	if isUser != nil {
+		return ctx.JSON(fiber.Map{"error": "user is exisit"})
+	}
+
+	password, _ := providers.HashPassword(u.Password)
+
+	newUser, _ := a.User.CreateOne(
+		db.User.Username.Set(u.UserName),
+		db.User.Password.Set(password),
+		db.User.Phone.Set(u.Phone),
+	).Exec(ctx.Context())
+
+	return ctx.JSON(fiber.Map{"registed": true, "userid": newUser.ID})
 }
 
 func (a *API) SetActiveOneUser(ctx *fiber.Ctx) error {

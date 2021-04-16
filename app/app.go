@@ -122,5 +122,7 @@ func setupAPI(app *fiber.App, entiry *db.PrismaClient) {
 
 	grp := app.Group("api")
 	grp.Post("/user/new", api.SetOneUser)
+	grp.Post("/user/login", api.GetLoginUser)
+	grp.Post("/user/token", api.GetLoginByToken)
 	grp.Get("/user", api.GetOneUser)
 }
