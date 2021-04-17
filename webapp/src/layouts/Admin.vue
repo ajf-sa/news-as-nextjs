@@ -66,29 +66,27 @@
                 ><span
                   class="pb-1 md:pb-0 text-xs md:text-base text-white md:font-bold block md:inline-block"
                 >
-                  المستخدمين
+                  الفريق
                 </span>
               </a>
             </router-link>
           </li>
-          
-          <li class="mr-3 flex-1">
-            <a
-              class="block py-1 md:py-3 pl-1 align-middle text-gray-800 no-underline hover:text-pink-500 border-b-2 border-gray-800 md:border-gray-900 hover:border-pink-500"
-            >
-              <i class="fas fa-link pr-0 md:pr-3"></i
-              ><span
-                class="pb-1 md:pb-0 text-xs md:text-base text-gray-600 md:text-gray-400 block md:inline-block"
+
+          <li class="mr-3 flex-1"  @click="logout">
+      
+              <a
+                class="block py-1 md:py-3 pl-1 align-middle text-gray-800 no-underline hover:text-pink-500 border-b-2 border-gray-800 md:border-gray-900 hover:border-pink-500"
               >
-                <button
-                  @click="logout"
-                  class="bg-blue-100 flex-grow px-4 py-2 text-xs font-semibold tracking-wider text-blue-600 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                <i class="fas fa-link pr-0 md:pr-3"></i
+                ><span
+                  class="pb-1 md:pb-0 text-xs md:text-base text-white md:font-bold block md:inline-block"
                 >
                   خروج
-                </button>
-              </span>
-            </a>
+                </span>
+              </a>
+          
           </li>
+       
         </ul>
       </div>
     </div>

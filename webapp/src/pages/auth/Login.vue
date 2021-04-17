@@ -18,7 +18,7 @@
         <p class="text-red-500 text-xs italic"></p>
       </div>
       <div class="flex items-center justify-between ">
-         <button @click="submit" class="bg-blue-100 flex-grow h-10 px-4 py-2 text-xs font-semibold tracking-wider text-blue-600 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">دخول</button>
+         <button @click="submit" class="bg-gray-400 flex-grow h-10 px-4 py-2 text-xs font-semibold tracking-wider text-white rounded hover:bg-blue-500 ">دخول</button>
       </div>
     </form>
     <p class="text-center text-gray-500 text-xs">
