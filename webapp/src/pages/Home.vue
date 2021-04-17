@@ -3,9 +3,9 @@
 <section class="text-gray-600 body-font text-right">
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-wrap  flex-row-reverse -m-4" >
-     <div v-for="item in [1,2,3,4]" :key="item" class="p-4 md:w-1/3">
+     <div v-for="item in 50" :key="item" class="p-4 md:w-1/3">
         <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-          <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://static.dw.com/image/49972010_403.jpg" alt="blog">
+          <img class="lg:h-48 md:h-36 w-full object-cover object-center" v-lazy ='image' alt="blog">
           <div class="p-6">
             <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">التصنيف</h2>
             <h1 class="title-font text-lg font-medium text-gray-900 mb-3">عنوان الخبر</h1>
@@ -54,7 +54,8 @@ export default{
         store.commit("SET_USERS")
     })
     return{
-      users
+      users,
+      image :"https://static.dw.com/image/49972010_403.jpg"
     }
   }
 }
