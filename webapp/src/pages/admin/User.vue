@@ -18,8 +18,8 @@ export default{
     const user =computed(() => store.getters.user)
 
     onMounted(()=>{
-        store.dispatch("getOneUser",route.params.id)
-        store.commit("SET_ONE_USER")
+        // store.dispatch("getOneUser",route.params.id)
+        // store.commit("SET_ONE_USER")
     })
     
     return{
