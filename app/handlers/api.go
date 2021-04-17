@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 
@@ -24,7 +23,6 @@ func NewAPI(entiry *db.PrismaClient, session *session.Session) *API {
 }
 
 func (a *API) Protected(ctx *fiber.Ctx) error {
-	fmt.Println("1st route!")
 	userID, _ := providers.ParseToken(ctx, "secret")
 	ctx.Locals("userId", strconv.Itoa(int(userID)))
 	return ctx.Next()
