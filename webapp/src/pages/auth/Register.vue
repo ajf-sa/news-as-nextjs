@@ -24,17 +24,19 @@
         <input v-model="user.phone" class="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="phone" id="phone" type="phone" placeholder="رقم الجوال">
         <p class="text-red-500 text-xs italic"></p>
       </div>
-      <div class="flex h-8 justify-end">
-     <span class="ml-2 px-2">موافق على <span class="underline">اتفاقية الاستخدام</span></span>
+      <div class="flex h-10 justify-start">
   <label class="flex items-center  ">   
     <input type="checkbox"  v-model="checked" class="form-checkbox">
   </label>
+     <span class="ml-2 px-2">موافق على <span class="underline">اتفاقية الاستخدام</span></span>
 </div>
       <div class="flex items-center justify-between ">
-         <button @click="submit" class="bg-blue-100 flex-grow h-10 px-4 py-2 text-xs font-semibold tracking-wider text-blue-600 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">تسجيل</button>
+         <button @click="submit" class="bg-gray-400 rounded flex-grow h-10 px-4 py-2 text-xs font-semibold tracking-wider text-white rounded hover:bg-blue-500">تسجيل</button>
       </div>
     </form>
-
+  <p class="text-center text-gray-500 text-xs">
+      <router-link class="more" :to="{ name: 'login',}"  >دخول </router-link>
+    </p>
     
   </div>
 </div>
