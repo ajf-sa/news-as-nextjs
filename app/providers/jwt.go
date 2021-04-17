@@ -27,7 +27,7 @@ func CreateToken(ctx *fiber.Ctx, userID uint, secret string) (Token, error) {
 
 	claims := token.Claims.(jwt.MapClaims)
 	claims["id"] = userID
-	expiresIn := time.Now().Add(time.Duration(60) * time.Second).Unix()
+	expiresIn := time.Now().Add(time.Duration(60*60) * time.Second).Unix()
 	claims["exp"] = expiresIn
 
 	tokenHash, err := token.SignedString([]byte(secret))
