@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/alfuhigi/news-ajf-sa/db"
 	"github.com/alfuhigi/news-ajf-sa/handlers"
+	"github.com/alfuhigi/news-ajf-sa/providers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -62,7 +64,8 @@ func main() {
 	app.Static("/", "webapp")
 
 	app.Get("/*", func(ctx *fiber.Ctx) error {
-
+		userid, _ := providers.ParseToken(ctx, "secret")
+		log.Println(userid)
 		return ctx.SendFile("./webapp/index.html")
 	})
 
@@ -123,6 +126,7 @@ func setupAPI(app *fiber.App, entiry *db.PrismaClient) {
 	grp := app.Group("api", api.Protected)
 	grp.Post("/user/new", api.SetOneUser)
 	grp.Post("/user/login", api.GetLoginUser)
+	grp.Post("/user/logout", api.GetLogoutUser)
 	grp.Post("/user/token", api.GetLoginByToken)
 	grp.Get("/user", api.GetOneUser)
 }
