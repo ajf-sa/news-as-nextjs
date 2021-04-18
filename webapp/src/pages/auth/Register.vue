@@ -44,7 +44,7 @@
 
 <script>
 import {useStore} from "vuex"
-import { ref ,computed} from "vue"
+import {onMounted, ref ,computed} from "vue"
 
 export default{
     setup(){
@@ -55,7 +55,9 @@ export default{
 
         const store = useStore()
         const user =computed(() => store.getters.user)
-
+        onMounted(()=>{
+        store.dispatch("loginByToken")
+      })
         function submit(){
             store.dispatch("setOneUser",user);
         }
