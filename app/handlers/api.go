@@ -34,10 +34,13 @@ func (a *API) SetApp(ctx *fiber.Ctx) error {
 }
 
 ///####### User ########//
-
+func (a *API) GetLogoutUser(ctx *fiber.Ctx) error {
+	providers.DeleteToken(ctx)
+	return ctx.JSON(fiber.Map{"login": false})
+}
 func (a *API) GetLoginByToken(ctx *fiber.Ctx) error {
 	userId, _ := strconv.Atoi(ctx.Locals("userId").(string))
-	log.Println(userId)
+	log.Println(userId, "check token")
 	user, err := a.User.FindUnique(db.User.ID.Equals(userId)).Exec(ctx.Context())
 	if err != nil {
 		return ctx.JSON(fiber.Map{"login": false, "error": "nologin"})
@@ -69,7 +72,8 @@ func (a *API) GetLoginUser(ctx *fiber.Ctx) error {
 	if isMatch {
 		if isUser.IsActive {
 			token, _ := providers.CreateToken(ctx, uint(isUser.ID), "secret")
-			return ctx.JSON(fiber.Map{"login": true, "token": token.Hash})
+			log.Println(token)
+			return ctx.JSON(fiber.Map{"login": true, "user": isUser})
 		}
 		return ctx.JSON(fiber.Map{"login": false, "error": "user is not active"})
 

@@ -2,7 +2,6 @@ package providers
 
 import (
 	"errors"
-	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -34,25 +33,25 @@ func CreateToken(ctx *fiber.Ctx, userID uint, secret string) (Token, error) {
 	if err != nil {
 		return t, err
 	}
-	// ctx.Cookie(&fiber.Cookie{
-	// 	Name:  "userid",
-	// 	Value: tokenHash,
-	// })
+	ctx.Cookie(&fiber.Cookie{
+		Name:  "userid",
+		Value: tokenHash,
+	})
 	t.Hash = tokenHash
 	t.Expire = expiresIn
 	return t, nil
 }
 
 func ParseToken(ctx *fiber.Ctx, secret string) (uint, error) {
-	tokenString := strings.Split(ctx.Get("Authorization"), " ")
-	// tokenString := ctx.Cookies("userid")
+	// tokenString := strings.Split(ctx.Get("Authorization"), " ")
+	tokenString := ctx.Cookies("userid")
 	// fmt.Println("Cookie:", tokenString)
-	if tokenString[1] == "" {
+	if tokenString == "" {
 		return 0, errors.New("Empty auth cookie")
 
 	}
 	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString[1], claims, func(token *jwt.Token) (interface{}, error) {
+	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
 	if err != nil {

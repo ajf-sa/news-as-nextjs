@@ -60,7 +60,7 @@ const store = createStore({
           if (res.data.login) {
             console.log(res.data)
             commit("SET_LOGIN_USER", res.data.login)
-            localStorage.setItem('token', res.data.token);
+            //localStorage.setItem('token', res.data.token);
             router.push("/cp")
           } else {
             console.log(res.data)
@@ -101,7 +101,11 @@ const store = createStore({
     },
     logout({ commit }) {
       commit("SET_LOGIN_USER", false)
-      localStorage.removeItem("token")
+      //localStorage.removeItem("token")
+      axios.post("/api/user/logout",)
+        .then(res => {
+          console.log(res.data)
+        })
       router.go("")
     }
   },
