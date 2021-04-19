@@ -40,16 +40,14 @@ const store = createStore({
   actions: {
 
 
-    loginByToken({ commit }) {
-      axios.post("/api/user/token")
-        .then(res => {
-          if (res.data.login) {
-            console.log(res.data)
-            commit("SET_LOGIN_USER", res.data.login)
-            commit("SET_USERNAME", res.data.username)
-            // router.push("/cp")
-          }
-        })
+    async loginByToken({ commit },dist) {
+      const res = await axios.post("/api/user/token")
+      if (res.data.login){
+        console.log(res.data)
+        commit("SET_LOGIN_USER", res.data.login)
+        commit("SET_USERNAME", res.data.username)
+        router.push(dist)
+      }
     },
 
 

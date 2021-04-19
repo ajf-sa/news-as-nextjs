@@ -54,7 +54,7 @@ export default{
         const store = useStore()
         const user =computed(() => store.getters.user)
         onBeforeMount(()=>{
-        store.dispatch("loginByToken")
+        store.dispatch("loginByToken","/")
       })
         function submit(){
             store.dispatch("setOneUser",user);
