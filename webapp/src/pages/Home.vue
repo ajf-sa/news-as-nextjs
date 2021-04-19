@@ -90,8 +90,9 @@ export default{
       isActive.value = !isActive.value
     }
     onMounted(()=>{
-        store.dispatch("getUsers");
-        store.commit("SET_USERS")
+      store.dispatch("loginByToken")
+        // store.dispatch("getUsers");
+        // store.commit("SET_USERS")
     })
     return{
       users,

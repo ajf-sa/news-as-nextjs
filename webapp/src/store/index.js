@@ -47,7 +47,7 @@ const store = createStore({
             console.log(res.data)
             commit("SET_LOGIN_USER", res.data.login)
             commit("SET_USERNAME", res.data.username)
-            router.push("/cp")
+            // router.push("/cp")
           }
         })
     },

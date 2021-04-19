@@ -1,18 +1,18 @@
-import { createRouter, createWebHistory } from "vue-router";
-import store from "../store";
-import Admin from "../layouts/Admin.vue";
-import Auth from "../layouts/Auth.vue";
+import { createRouter, createWebHistory } from "vue-router"
+import store from "../store"
+import Admin from "../layouts/Admin.vue"
+import Auth from "../layouts/Auth.vue"
 
 
 import Dashboard from '../pages/admin/Dashboard.vue'
-import User from "../pages/admin/User.vue";
-import Post from "../pages/admin/Post.vue";
+import User from "../pages/admin/User.vue"
+import Post from "../pages/admin/Post.vue"
 
 import Login from '../pages/auth/Login.vue'
 import Register from '../pages/auth/Register.vue'
 
-import Home from "../pages/Home.vue";
-import PageNotFound from "../pages/PageNotFound.vue";
+import Home from "../pages/Home.vue"
+import PageNotFound from "../pages/PageNotFound.vue"
 
 
 const routes = [

@@ -30,15 +30,17 @@
 
 <script>
 import {useStore} from "vuex"
-import {onMounted, ref ,computed} from "vue"
+import router from '../../router'
+import {onBeforeMount, ref ,computed} from "vue"
 export default{
     setup(){
         const name = ref("");
         const password = ref("")
         const store = useStore()
         const user =computed(() => store.getters.user)
-        onMounted(()=>{
+        onBeforeMount(()=>{
         store.dispatch("loginByToken")
+        router.push("/cp")
     })
         function submit(){
            store.dispatch("setLoginUser",user)
