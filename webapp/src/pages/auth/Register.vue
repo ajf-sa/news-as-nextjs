@@ -44,28 +44,23 @@
 
 <script>
 import {useStore} from "vuex"
-import {onMounted, ref ,computed} from "vue"
+import {onBeforeMount, ref ,computed} from "vue"
 
 export default{
     setup(){
-        const name = ref("");
-        const password = ref("");
-        const phone = ref("");
+        
         const checked = ref("");
 
         const store = useStore()
         const user =computed(() => store.getters.user)
-        onMounted(()=>{
-        store.dispatch("loginByToken")
+        onBeforeMount(()=>{
+        store.dispatch("loginByToken","/")
       })
         function submit(){
             store.dispatch("setOneUser",user);
         }
-        return {
-            name,
+        return {       
             user,
-            password,
-            phone,
             checked,
             submit
         }
