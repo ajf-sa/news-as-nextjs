@@ -52,8 +52,8 @@ model Tag {
     arSlug String?
     createAt DateTime @default(now())
     updateAt DateTime @updatedAt
-    post Post @relation(fields: [postID], references: [id])
-    postID Int 
+    post Post? @relation(fields: [postID], references: [id])
+    postID Int? 
 }
 
 model Image {
