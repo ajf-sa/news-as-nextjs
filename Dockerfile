@@ -4,7 +4,7 @@ RUN  apt-get install -y nodejs
 WORKDIR /build
 COPY webapp /build
 RUN npm install 
-RUN npm install --D
+# RUN npm install --D
 RUN npm run build 
 WORKDIR /app
 COPY app /app
