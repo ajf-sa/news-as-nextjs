@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+const { resolve } = require('path')
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
@@ -36,7 +37,13 @@ export default ({ command, mode }) => {
       // build specific config
       // base:"/cp/",
       build:{
-        assetsDir:""
+        assetsDir:"",
+        rollupOptions: {
+          input: {
+            main: resolve(__dirname, 'index.html'),
+            nested: resolve(__dirname, 'cp/index.html')
+          },
+        }
       },
       plugins: [vue()],
     }
