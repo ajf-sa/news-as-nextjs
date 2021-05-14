@@ -3,25 +3,21 @@ version: '3.3'
 services:
     newsajf01:
       build:
-        context: ./
-        dockerfile: Dockerfile
-      pid : host
-      networks:
-        - default
-      # volumes:
-      #   - ./app/static/docs:/app/static/docs
-      expose:
-        - "3000"   
+          context: ./
+          dockerfile: Dockerfile
+      pid: host
+      networks: 
+          - default
+      expose: 
+          - "3000"
       ports: 
-          - "80:3000"                                                                                                         
+          - "89:3000"
       container_name: newsajf01
       hostname: newsajf01
       restart: always
-      environment:
-        - DATABASE_URL=postgres://admin:secret@db01:5432/newsajf01
-    
+   
 
 networks:  
  default:
   external:
-    name: ns2020-existing-network
+    name: ns2021-existing-network
