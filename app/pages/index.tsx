@@ -12,9 +12,10 @@ const Home = ({posts}) => {
                 <section className="w-full flex flex-col items-center px-3">
                     {posts.map(post=>(
                         <Post key={post.id}
+                        id={post.id}
                         title={post.title}
                         description={post.description}
-                        category={'post.category'}
+                        tags={post.tags}
                         />
                     ))}
 
