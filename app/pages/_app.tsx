@@ -6,6 +6,7 @@ function MyApp({ Component, pageProps }) {
   <>
     <Head>
     <title>موجز | ajf.sa</title>
+    
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <meta charSet="UTF-8" />
     <meta name="description" content="موجز اخبار,موجز اعمال, موجز رياضة,موجز فن,موجز ترفيه, موجز سياحة, موجز تقنية" />
