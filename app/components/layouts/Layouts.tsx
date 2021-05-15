@@ -6,7 +6,7 @@ import SideBar from 'components/SideBar'
     return (
         <>
             <Header />
-            <div className="flex flex-wrap  overflow-hidden justify-center items-center py-4 ">
+            <div className="flex flex-wrap  overflow-hidden justify-center  py-4 ">
             <div className="my-3 w-full overflow-hidden  lg:w-1/2">
             {children}
              </div>
