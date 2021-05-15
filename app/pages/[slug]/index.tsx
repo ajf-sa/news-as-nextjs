@@ -1,8 +1,6 @@
-import {useRouter} from 'next/router'
-import  Loyout from '../../components/layouts/Layouts'
+import  Loyout from 'components/layouts/Layouts'
 const Home = ({slug})=> {
-    // const router = useRouter()
-    // const {slug} = router.query
+
   return (
     <>
     <Loyout>
