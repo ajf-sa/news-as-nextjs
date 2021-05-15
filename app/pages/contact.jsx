@@ -3,7 +3,7 @@ export default function Home() {
   return (
     <>
     <Loyout>
-      news.ajf.sa 
+     contact
     </Loyout>
       </>
   )
