@@ -37,7 +37,7 @@ const Home = ({posts}) => {
 export async function getServerSideProps(context) {
     const {APP_URL} = process.env
     const res = await axios(`${APP_URL}/posts`)
-    const data:PostType = res.data
+    const data:PostType = await res.data
     return {
       props: {posts:data}, // will be passed to the page component as props
     }
