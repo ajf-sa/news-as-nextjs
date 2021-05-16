@@ -1,9 +1,7 @@
-import Loyout from 'components/layouts/Layouts'
 export default function Home() {
     return (
         <>
-            <Loyout>
-                <>
+           
                     <section className="container mx-auto lg:mt-20 transform duration-500 p-10 mt-10">
                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center from-cyan-400 to-cyan-900 mb-8">
                             <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
@@ -1454,8 +1452,7 @@ export default function Home() {
                                             </article>
                                         </section>
                                     </section>
-                </>
-            </Loyout>
+    
         </>
     )
 }
