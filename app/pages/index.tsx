@@ -4,6 +4,7 @@ import Post from 'components/Post'
 
 import axios from 'axios'
 import { PostType } from 'lib/interface'
+
 const Home = ({posts}) => {
 
     return (
@@ -11,7 +12,8 @@ const Home = ({posts}) => {
             <Loyout>
                 <section className="w-full flex flex-col items-center px-3">
                     {posts.map(post=>(
-                        <Post key={post.id}
+                        <Post 
+                        key={post.id.toString()}
                         id={post.id}
                         title={post.title}
                         description={post.description}
