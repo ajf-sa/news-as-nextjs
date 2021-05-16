@@ -3,8 +3,10 @@ import Head from 'next/head'
 import cookie from "cookie";
 import axios from 'axios'
 import Layout from 'components/Layout';
+import ContextWrapper from 'components/ContextWrapper'
+import Header from 'components/Header';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, tags }) {
   const {NEXT_PUBLIC_GOOGLE_ANALYTICS} = process.env
   return( 
   <>
@@ -31,12 +33,34 @@ function MyApp({ Component, pageProps }) {
     }}
   />
   </Head>
-  <Layout {...pageProps}>
+  <ContextWrapper tags={tags}>
+    <Header />
+  </ContextWrapper>
+  <Layout>
   <Component {...pageProps} />
   </Layout>
   
   </>
   )
+}
+
+
+MyApp.getInitialProps = async ({Component, ctx}) => {
+  let pageProps = {}
+  
+  const {APP_URL} = process.env
+  const res = await axios(`${APP_URL}/tags`)
+  const tags = await res.data
+
+  if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx)
+  }
+
+
+  return {
+      pageProps,
+      tags
+  }
 }
 
 export default MyApp
