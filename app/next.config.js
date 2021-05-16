@@ -15,6 +15,6 @@ module.exports = {
         return config
     },
     images: {
-      domains: ["source.unsplash.com"],
+      domains: ["source.unsplash.com","admin-api","admin.ultraify.com"],
     },
   }

@@ -2,7 +2,7 @@ import { PostType } from "lib/interface"
 import Link from 'next/link'
 import Image from 'next/image'
 import { DateNow } from "./dateNow"
-const Post = ({ id, title, description, tags, created_at }: PostType) => {
+const Post = ({ id, title, description, tags, created_at,image }: PostType) => {
 
     return (<>
 
@@ -11,7 +11,7 @@ const Post = ({ id, title, description, tags, created_at }: PostType) => {
                 <a className="hover:opacity-75 overflow-hidden">
                     <Image
                         className=" py-3 transform hover:scale-110 duration-200"
-                        src={`https://source.unsplash.com/collection/1346951/1000x900?sig=` + id}
+                        src={`https://admin.ultraify.com${image?.url}`}
                         alt=""
                         width={1000}
                         height={900}

@@ -11,6 +11,7 @@ export default function getPostById({post}){
                         description={post.description}
                         tags={post.tags}
                         created_at ={post.created_at}
+                        image = {post.image}
                         />
         </>
     )
