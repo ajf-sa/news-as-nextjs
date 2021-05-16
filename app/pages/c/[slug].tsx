@@ -1,14 +1,32 @@
 import axios from 'axios'
+import Post from 'components/Post'
 
 const Category = ({tag}) =>{
-    console.log(tag.posts);
-
+    
+  if(tag.length > 0){
     return (
-        <div>
-         {tag.posts}
-        </div>
+      <>
+      {tag?.map(t =>{
+        return(
+        t.posts?.map(p =>{
+          return (
+            <Post 
+                key={p.id.toString()}
+                id={p.id}
+                title={p.title}
+                description={p.description}
+                tags={tag}
+                />
+          )
+        })
+        )
+      })}
+      </>
     )
+  }
+
 }
+
 
 
 export async function getServerSideProps(context) {
