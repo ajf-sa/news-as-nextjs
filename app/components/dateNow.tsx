@@ -1,5 +1,5 @@
-export const DateNow = () => {
-    var d = new Date(),
+export const DateNow = ({date}) => {
+    var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
@@ -8,7 +8,7 @@ export const DateNow = () => {
         month = '0' + month;
     if (day.length < 2)
         day = '0' + day;
-    const result = [year, month, day].join('-')
+    const result = [day,month,year].join('-')
 
     return(
         <span className="px-1"> 

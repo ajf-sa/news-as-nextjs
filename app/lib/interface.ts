@@ -16,5 +16,6 @@ export interface PostType{
     title : string | null
     description :string | null
     tags : Array<Tag> 
+    created_at : string | null
   
 }
