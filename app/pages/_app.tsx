@@ -6,8 +6,10 @@ import Layout from 'components/Layout';
 import ContextWrapper from 'components/ContextWrapper'
 import Header from 'components/Header';
 
-function MyApp({ Component, pageProps, tags }) {
+function MyApp({ Component, pageProps}) {
   const {NEXT_PUBLIC_GOOGLE_ANALYTICS} = process.env
+
+  const tags = [{id:1,name:"محليات",slug:"local"},{id:2,name:"رياضة",slug:"sports"}]
   return( 
   <>
     <Head>
@@ -45,22 +47,22 @@ function MyApp({ Component, pageProps, tags }) {
 }
 
 
-MyApp.getInitialProps = async ({Component, ctx}) => {
-  let pageProps = {}
+// MyApp.getInitialProps = async ({Component, ctx}) => {
+//   let pageProps = {}
   
-  const {APP_URL} = process.env
-  const res = await axios(`${APP_URL}/tags`)
-  const tags = await res.data
+//   const {APP_URL} = process.env
+//   const res = await axios(`${APP_URL}/tags`)
+//   const tags = await res.data
 
-  if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-  }
+//   if (Component.getInitialProps) {
+//       pageProps = await Component.getInitialProps(ctx)
+//   }
 
 
-  return {
-      pageProps,
-      tags
-  }
-}
+//   return {
+     
+//       tags
+//   }
+// }
 
 export default MyApp
