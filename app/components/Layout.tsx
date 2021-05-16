@@ -1,8 +1,8 @@
  import Header from 'components/Header'
  import Footer from 'components/Footer'
 import SideBar from 'components/SideBar'
-import Nav from './Nav'
- const Layout = ({ children }) => {
+
+const Layout = ({ children }) => {
 
     return (
         <>

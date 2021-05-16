@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import HeaderContext from '../contexts/HeaderContext'
 const Header = () => {
     const router = useRouter()
+   
     const {menuItems} = useContext(HeaderContext)
  
     return (
@@ -29,7 +30,7 @@ const Header = () => {
                     <div className="w-full container mx-auto flex flex-row-reverse sm:flex-row items-center justify-center text-sm font-bold uppercase mt-0 px-6 py-2">
                          {menuItems.map(item => (
                         <Link href={`/c/${item.slug}`} key={item.id}>
-                            <a className={router.pathname === item.slug ? 'active hover:bg-gray-400 rounded py-1 px-3' : 'hover:bg-gray-400 rounded py-1 px-3' }>{item.name}</a>
+                            <a className={router.query.slug === item.slug ? 'bg-gray-400 rounded py-1 px-4 mx-2' : 'hover:bg-gray-400 rounded py-1 px-4 mx-2' }>{item.name}</a>
                         </Link>
                    
                 ))}
