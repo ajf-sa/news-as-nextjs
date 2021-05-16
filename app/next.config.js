@@ -15,6 +15,6 @@ module.exports = {
         return config
     },
     images: {
-      domains: ["unsplash"],
+      domains: ["source.unsplash.com"],
     },
   }
