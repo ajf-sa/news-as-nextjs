@@ -6,10 +6,7 @@ import HeaderContext from '../contexts/HeaderContext'
 const Header = () => {
     const router = useRouter()
     const {menuItems} = useContext(HeaderContext)
-    const tags : Array<Tag> = [
-        {id:1,name:"محليات",slug:"local"},
-        {id:2,name:"رياضة",slug:"sports"}
-    ]    
+ 
     return (
         <>
             <header className="w-full container mx-auto">
