@@ -17,5 +17,9 @@ export interface PostType{
     description :string | null
     tags : Array<Tag> 
     created_at : string | null
+    image : ImageType | null
   
+}
+export interface ImageType{
+    url : string | null
 }
