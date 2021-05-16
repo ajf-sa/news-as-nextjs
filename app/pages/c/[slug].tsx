@@ -16,6 +16,7 @@ const Category = ({tag}) =>{
                 title={p.title}
                 description={p.description}
                 tags={tag}
+                created_at={p.created_at}
                 />
           )
         })
