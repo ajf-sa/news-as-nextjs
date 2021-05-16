@@ -1,12 +1,10 @@
-import  Loyout from 'components/layouts/Layouts'
+
 const Home = ({slug})=> {
 
   return (
     <>
-    <Loyout>
     {slug}
-    </Loyout>
-      </>
+    </>
   )
 }
 

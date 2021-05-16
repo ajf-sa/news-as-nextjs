@@ -12,7 +12,7 @@ const Post = ({id,title,description,tags}:PostType)=>{
                     <h1 className=" aref text-center font-medium">snap: ajf.sa</h1>
                 <div className="bg-white flex flex-col justify-start px-4">
                    {tags.map(c =>(
-                       <Link href={`/${c.slug}`}>
+                       <Link href={`/${c.slug}` } key={c.id?.toString()}>
                         <a  className="aref text-cyan-700 text-sm font-bold -pb-4">{c.name}</a>
                         </Link>
                    ))}
