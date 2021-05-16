@@ -2,12 +2,12 @@
  import Footer from 'components/Footer'
 import SideBar from 'components/SideBar'
 import Nav from './Nav'
- const Layout = ({ children,tags }) => {
+ const Layout = ({ children }) => {
 
     return (
         <>
             <Header />
-            <Nav tags={tags} />
+            <Nav />
             <div className="flex flex-wrap  overflow-hidden justify-center  py-4 ">
             <div className="my-3 w-full overflow-hidden  lg:w-1/2">
             {children}
