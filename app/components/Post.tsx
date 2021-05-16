@@ -1,5 +1,6 @@
 import { PostType } from "lib/interface"
 import Link from 'next/link'
+import Image from 'next/image'
 const Post = ({id,title,description,tags}:PostType)=>{
 
     return (<>
@@ -7,7 +8,13 @@ const Post = ({id,title,description,tags}:PostType)=>{
     <article className="flex flex-col text-right shadow my-4 rounded-lg">
               
                 <a href="#" className="hover:opacity-75 overflow-hidden ">
-                    <img className=" py-3 transform hover:scale-110 duration-200" src={`https://source.unsplash.com/collection/1346951/1000x500?sig=`+id}/>
+                    <Image 
+                    className=" py-3 transform hover:scale-110 duration-200" 
+                    src={`https://source.unsplash.com/collection/1346951/1000x500?sig=`+id}
+                    alt=""
+                    width={1000}
+                    height={500}
+                    />
                 </a>
                     <h1 className=" aref text-center font-medium">snap: ajf.sa</h1>
                 <div className="bg-white flex flex-col justify-start px-4">

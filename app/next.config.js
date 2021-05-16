@@ -13,5 +13,8 @@ module.exports = {
         config.resolve.alias['public']= path.join(__dirname,'public')
         config.resolve.alias['styles']= path.join(__dirname,'styles')
         return config
-    }
+    },
+    images: {
+      domains: ["unsplash"],
+    },
   }
