@@ -39,14 +39,4 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-MyApp.getInitialProps = async ({ ctx }) => {
-  const c = cookie.parse(ctx.req ? ctx.req.headers.cookie || "" : undefined);
-  const { APP_URL } = process.env
-  const res = await axios(`${APP_URL}/tags`)
-  const data = await res.data
-  return {
-    pageProps:{tags:data}}
-  
-}
-
 export default MyApp
