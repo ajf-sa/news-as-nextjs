@@ -1,7 +1,4 @@
-import Loyout from 'components/layouts/Layouts'
-import { DateNow } from 'components/dateNow'
 import Post from 'components/Post'
-
 import axios from 'axios'
 import { PostType } from 'lib/interface'
 
@@ -9,7 +6,6 @@ const Home = ({posts}) => {
 
     return (
         <>
-            <Loyout>
                 <section className="w-full flex flex-col items-center px-3">
                     {posts.map(post=>(
                         <Post 
@@ -28,9 +24,6 @@ const Home = ({posts}) => {
                     </div>
 
                 </section>
-
-
-            </Loyout>
         </>
     )
 }

@@ -1,6 +1,8 @@
 import '../styles/globals.css'
 import Head from 'next/head'
 import cookie from "cookie";
+import axios from 'axios'
+import Layout from 'components/Layout';
 
 function MyApp({ Component, pageProps }) {
   const {NEXT_PUBLIC_GOOGLE_ANALYTICS} = process.env
@@ -29,7 +31,9 @@ function MyApp({ Component, pageProps }) {
     }}
   />
   </Head>
+  <Layout {...pageProps}>
   <Component {...pageProps} />
+  </Layout>
   
   </>
   )
@@ -37,11 +41,12 @@ function MyApp({ Component, pageProps }) {
 
 MyApp.getInitialProps = async ({ ctx }) => {
   const c = cookie.parse(ctx.req ? ctx.req.headers.cookie || "" : undefined);
-  console.log(c);
-  
+  const { APP_URL } = process.env
+  const res = await axios(`${APP_URL}/tags`)
+  const data = await res.data
   return {
-    pageProps:{tags:"true"}
-  }
+    pageProps:{tags:data}}
+  
 }
 
 export default MyApp
