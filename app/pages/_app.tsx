@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Head from 'next/head'
+import type { AppProps } from 'next/app'
 import cookie from "cookie";
 import axios from 'axios'
 import Layout from 'components/Layout';
@@ -7,7 +8,9 @@ import ContextWrapper from 'components/ContextWrapper'
 import Header from 'components/Header';
 import { useEffect, useState } from 'react';
 
-function MyApp({ Component, pageProps}) {
+
+function MyApp({ Component, pageProps, router }: AppProps) {
+  
   const {NEXT_PUBLIC_GOOGLE_ANALYTICS} = process.env
  
 
