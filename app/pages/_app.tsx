@@ -5,17 +5,12 @@ import axios from 'axios'
 import Layout from 'components/Layout';
 import ContextWrapper from 'components/ContextWrapper'
 import Header from 'components/Header';
+import { useEffect, useState } from 'react';
 
 function MyApp({ Component, pageProps}) {
   const {NEXT_PUBLIC_GOOGLE_ANALYTICS} = process.env
+ 
 
-  const tags = [
-    {id:1,name:"محليات",slug:"local"},
-    {id:3,name:"رياضة",slug:"sports"},
-    // {id:2,name:"اعمال",slug:"work"},
-    // {id:4,name:"تقنية",slug:"tech"},
-    // {id:5,name:"ترفية",slug:"fun"}
-  ]
   return( 
   <>
     <Head>
@@ -41,9 +36,9 @@ function MyApp({ Component, pageProps}) {
     }}
   />
   </Head>
-  <ContextWrapper tags={tags}>
+
     <Header />
-  </ContextWrapper>
+
   <Layout>
   <Component {...pageProps} />
   </Layout>
