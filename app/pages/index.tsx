@@ -31,16 +31,13 @@ const Home = ({posts}) => {
 }
 
 //https://admin.ultraify.com/posts
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     const {APP_URL} = process.env
     const res = await axios(`${APP_URL}/posts`)
     const data:PostType = await res.data
     return {
       props: {posts:data}, // will be passed to the page component as props
-      revalidate: 60,
     }
   }
-
- 
   
 export default Home
