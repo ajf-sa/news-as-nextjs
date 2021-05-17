@@ -10,8 +10,7 @@
     "db:reset": "prisma migrate reset --force --preview-feature",
     "db:migrate:deployment": "[[ \\\"$APP_ENV\\\" == \\\"preview\\\" ]] && yarn db:reset || yarn db:migrate:prod",
     "db:migrate:prod": "prisma migrate deploy",
-    "vercel-build": "next build && yarn db:migrate:deployment",
-    "prepare": "husky install"
+    "vercel-build": "next build && yarn db:migrate:deployment"
   },
   "dependencies": {
     "axios": "^0.21.1",
