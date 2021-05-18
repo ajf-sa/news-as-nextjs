@@ -48,8 +48,8 @@ const Home = ({ allPosts, preview }) => {
 export async function getStaticProps({ preview = null }) {
 
     const {APP_URL} = process.env
-    const res = (await axios(`${APP_URL}/posts`)) || []
-    const allPosts:PostType = await res.data
+    const res = await axios(`${APP_URL}/posts`)
+    const allPosts:PostType = ( await res.data ) || []
     return {
       props: { allPosts, preview },
     }
