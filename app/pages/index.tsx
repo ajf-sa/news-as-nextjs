@@ -2,12 +2,16 @@ import Post from 'components/Post'
 import axios from 'axios'
 import { PostType } from 'lib/interface'
 
-const Home = ({posts}) => {
+const Home = ({ allPosts, preview }) => {
+
+    const heroPost = allPosts[0]
+    const morePosts = allPosts.slice(1)
 
     return (
         <>
                 <section className="w-full flex flex-col items-center px-3">
-                    {posts.map(post=>(
+                    
+                    {morePosts.length > 0 && allPosts.map(post=>(
                         <Post 
                         key={post.id.toString()}
                         id={post.id}
@@ -30,14 +34,26 @@ const Home = ({posts}) => {
     )
 }
 
-//https://admin.ultraify.com/posts
-export async function getServerSideProps(context) {
+// //https://admin.ultraify.com/posts
+// export async function getServerSideProps(context) {
+//     const {APP_URL} = process.env
+//     const res = await axios(`${APP_URL}/posts`)
+//     const data:PostType = await res.data
+//     return {
+//       props: {posts:data}, // will be passed to the page component as props
+//     }
+//   }
+
+
+export async function getStaticProps({ preview = null }) {
+
     const {APP_URL} = process.env
-    const res = await axios(`${APP_URL}/posts`)
-    const data:PostType = await res.data
+    const res = (await axios(`${APP_URL}/posts`)) || []
+    const allPosts:PostType = await res.data
     return {
-      props: {posts:data}, // will be passed to the page component as props
+      props: { allPosts, preview },
     }
   }
+
   
 export default Home

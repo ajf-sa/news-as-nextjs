@@ -6,13 +6,13 @@
 // "updated_at": "2021-05-15T15:25:51.498Z"
 
 export interface Tag{
-    id : number | null
+    id : string | null
     name : string | null
     slug : string | null
 }
 
 export interface PostType{
-    id: number | null
+    id: string | null
     title : string | null
     description :string | null
     tags : Array<Tag> 

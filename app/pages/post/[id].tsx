@@ -26,4 +26,6 @@ export async function getServerSideProps(context) {
       props: {post:data}, // will be passed to the page component as props
     }
   }
+
+  
   
