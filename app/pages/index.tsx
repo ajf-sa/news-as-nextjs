@@ -35,18 +35,7 @@ const Home = ({ allPosts, preview }) => {
 }
 
 // //https://admin.ultraify.com/posts
-// export async function getServerSideProps(context) {
-//     const {APP_URL} = process.env
-//     const res = await axios(`${APP_URL}/posts`)
-//     const data:PostType = await res.data
-//     return {
-//       props: {posts:data}, // will be passed to the page component as props
-//     }
-//   }
-
-
-export async function getStaticProps({ preview = null }) {
-
+export async function getServerSideProps({ preview = null }) {
     const {APP_URL} = process.env
     const res = await axios(`${APP_URL}/posts`)
     const allPosts:PostType = ( await res.data ) || []
@@ -54,6 +43,17 @@ export async function getStaticProps({ preview = null }) {
       props: { allPosts, preview },
     }
   }
+
+
+// export async function getStaticProps({ preview = null }) {
+
+//     const {APP_URL} = process.env
+//     const res = await axios(`${APP_URL}/posts`)
+//     const allPosts:PostType = ( await res.data ) || []
+//     return {
+//       props: { allPosts, preview },
+//     }
+//   }
 
   
 export default Home
