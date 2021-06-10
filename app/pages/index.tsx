@@ -8,6 +8,7 @@ type Url = {
 type Pos = {
   id: string;
   title: string;
+  slug: string;
   description: string;
   created_at: any;
   feature_image: any;
@@ -40,6 +41,7 @@ const Home: React.FC<{ posts: Url }> = (props) => {
             key={post.id.toString()}
             id={post.id}
             title={post.title}
+            slug={post.slug}
             description={post.description}
             created_at={post.created_at}
             image={post.feature_image}

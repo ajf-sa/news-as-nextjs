@@ -14,6 +14,7 @@ export interface Tag {
 export interface PostType {
   id: string | null;
   title: string | null;
+  slug: string | null;
   description: string | null;
   created_at: string | null;
   image: ImageType | null;
