@@ -1,10 +1,3 @@
-// "id": 1,
-// "name": "محليات",
-// "slug": "local",
-// "published_at": "2021-05-15T15:09:32.221Z",
-// "created_at": "2021-05-15T15:09:29.637Z",
-// "updated_at": "2021-05-15T15:25:51.498Z"
-
 export interface Tag {
   id: string;
   name: string;
