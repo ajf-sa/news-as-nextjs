@@ -3,15 +3,7 @@ import axios from 'axios';
 import { PostType } from 'lib/interface';
 
 type Url = {
-  posts: Pos[];
-};
-type Pos = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  created_at: any;
-  feature_image: any;
+  posts: PostType[];
 };
 
 async function getPosts() {
@@ -37,15 +29,7 @@ const Home: React.FC<{ posts: Url }> = (props) => {
     <>
       <section className="w-full flex flex-col items-center px-3">
         {posts.posts.map((post) => (
-          <Post
-            key={post.id.toString()}
-            id={post.id}
-            title={post.title}
-            slug={post.slug}
-            description={post.description}
-            created_at={post.created_at}
-            image={post.feature_image}
-          />
+          <Post key={post.id.toString()} post={post} />
         ))}
 
         <div className="flex items-center py-12">

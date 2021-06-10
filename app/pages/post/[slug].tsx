@@ -32,16 +32,7 @@ export const getStaticPaths = () => {
   };
 };
 
-type Pos = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  created_at: any;
-  feature_image: any;
-};
-
-const getPostById: React.FC<{ post: Pos }> = (props) => {
+const getPostById: React.FC<{ post: PostType }> = (props) => {
   const { post } = props;
 
   const router = useRouter();
@@ -50,15 +41,7 @@ const getPostById: React.FC<{ post: Pos }> = (props) => {
   }
   return (
     <>
-      <Post
-        key={post.slug}
-        id={post.slug}
-        title={post.title}
-        slug={post.slug}
-        description={post.description}
-        created_at={post.created_at}
-        image={post.feature_image}
-      />
+      <Post key={post.slug} post={post} />
     </>
   );
 };

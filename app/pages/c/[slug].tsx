@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Post from 'components/Post';
 import { useRouter } from 'next/router';
+import { PostType } from 'lib/interface';
+import { useState } from 'react';
 
 async function getPost(slug: string) {
   const { APP_URL, GHOST_CONTENT_KEY } = process.env;
@@ -28,37 +30,16 @@ export const getStaticPaths = () => {
   };
 };
 
-type Pos = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  created_at: any;
-  feature_image: any;
-};
-
-const Category: React.FC<{ post: Pos }> = (props) => {
+const Category: React.FC<{ post: PostType }> = (props) => {
   const { post } = props;
+  const [enableLoadComments, setEnableLoadComments] = useState<boolean>(true);
   const router = useRouter();
 
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
-  return (
-    <>
-      {
-        <Post
-          key={post.id.toString()}
-          id={post.id}
-          title={post.title}
-          slug={post.slug}
-          description={post.description}
-          created_at={post.created_at}
-          image={post.feature_image}
-        />
-      }
-    </>
-  );
+
+  return <>{<Post key={post.id.toString()} post={post} />}</>;
 };
 
 export default Category;

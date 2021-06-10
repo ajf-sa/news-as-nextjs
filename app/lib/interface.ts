@@ -6,19 +6,23 @@
 // "updated_at": "2021-05-15T15:25:51.498Z"
 
 export interface Tag {
-  id: string | null;
-  name: string | null;
-  slug: string | null;
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface PostType {
-  id: string | null;
-  title: string | null;
-  slug: string | null;
-  description: string | null;
-  created_at: string | null;
-  image: ImageType | null;
+  id: string;
+  slug: string;
+  uuid: string;
+  title: string;
+  url: string;
+  html: string;
+  excerpt: string;
+  comment_id: string;
+  feature_image: string;
+  created_at: string;
 }
 export interface ImageType {
-  url: string | null;
+  url: string;
 }
