@@ -10,7 +10,6 @@ async function getPost(slug: string) {
     `${APP_URL}/ghost/api/v4/content/posts/slug/${slug}?key=${GHOST_CONTENT_KEY}` //&fields=title,slug,html
   );
   const data = await res.data;
-  console.log(data);
 
   return data.posts[0];
 }

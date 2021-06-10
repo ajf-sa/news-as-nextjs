@@ -1,17 +1,13 @@
-import Post from 'components/Post';
+import ListPost from 'components/ListPost';
 import axios from 'axios';
 import { PostType } from 'lib/interface';
-
-type Url = {
-  posts: PostType[];
-};
 
 async function getPosts() {
   const { APP_URL, GHOST_CONTENT_KEY } = process.env;
   const res = await axios(
     `${APP_URL}/ghost/api/v4/content/posts/?key=${GHOST_CONTENT_KEY}`
   );
-  const data: PostType = await res.data;
+  const data: PostType = await res.data.posts;
   return data;
 }
 
@@ -23,13 +19,13 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-const Home: React.FC<{ posts: Url }> = (props) => {
+const Home: React.FC<{ posts: PostType[] }> = (props) => {
   const { posts } = props;
   return (
     <>
       <section className="w-full flex flex-col items-center px-3">
-        {posts.posts.map((post) => (
-          <Post key={post.id.toString()} post={post} />
+        {posts.map((post) => (
+          <ListPost key={post.id.toString()} post={post} />
         ))}
 
         <div className="flex items-center py-12">

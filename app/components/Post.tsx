@@ -36,12 +36,12 @@ const Post: React.FC<{ post: PostType }> = (props) => {
           <p className=" text-sm pb-3">
             نشر في <DateNow date={post.created_at} />
           </p>
-          <Link href={`/post/${post.slug}`}>
-            <a
-              className="pb-10 lg:pb-12 text-lg font-normal text-center lg:text-justify"
-              dangerouslySetInnerHTML={{ __html: post.html }}
-            ></a>
-          </Link>
+
+          <p
+            className="pb-10 lg:pb-12 text-lg font-normal text-center lg:text-justify"
+            dangerouslySetInnerHTML={{ __html: post.html }}
+          ></p>
+
           {/* <a  className="uppercase text-gray-800 hover:text-black pb-3">  لكي تعرف اكثر...
                     <span className="font-bold"> <span className="lowercase font-normal"> snap:</span> ajf.sa</span></a> */}
         </div>
